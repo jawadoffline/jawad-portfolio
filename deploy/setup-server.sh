@@ -28,7 +28,7 @@ After=network.target
 [Service]
 User=ubuntu
 WorkingDirectory=/home/ubuntu/app
-ExecStart=/usr/bin/java -Xmx512m -Dspring.profiles.active=prod -jar /home/ubuntu/app/portfolio-1.0.0.jar
+ExecStart=/usr/bin/java -Xmx384m -Xms256m -XX:+UseSerialGC -Dspring.profiles.active=prod -jar /home/ubuntu/app/portfolio-1.0.0.jar
 Restart=always
 RestartSec=5
 StandardOutput=journal
