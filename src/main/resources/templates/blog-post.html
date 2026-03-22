@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${post.title + ' — Jawad Ali'}">Blog Post</title>
+    <meta name="description" th:content="${post.description}">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" th:content="${post.title}">
+    <meta property="og:description" th:content="${post.description}">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23030712'/><text y='.88em' font-size='80' font-family='monospace' font-weight='bold' fill='%2310b981' x='50%25' text-anchor='middle'>J</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Consolas', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans antialiased">
+
+<!-- Navbar -->
+<nav class="sticky top-0 z-40 bg-gray-950/80 backdrop-blur-md border-b border-gray-800/50">
+    <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/" class="font-mono font-bold text-emerald-400 text-lg tracking-wider hover:text-emerald-300 transition">
+            JAWAD<span class="text-gray-600">.</span>ALI
+        </a>
+        <div class="flex items-center gap-6">
+            <a href="/" class="text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">HOME</a>
+            <a href="/blog" class="text-sm text-emerald-400 font-mono tracking-wide">BLOG</a>
+            <a href="/resume" class="text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">RESUME</a>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-3xl mx-auto px-6 py-16">
+    <!-- Back link -->
+    <a href="/blog" class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-emerald-400 transition font-mono mb-8">
+        &larr; ALL POSTS
+    </a>
+
+    <!-- Post header -->
+    <header class="mb-12">
+        <h1 th:text="${post.title}" class="text-3xl sm:text-4xl font-black text-white leading-tight mb-4"></h1>
+        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+            <span th:text="${post.author}" class="font-medium text-gray-400"></span>
+            <span>&middot;</span>
+            <span th:text="${#temporals.format(post.date, 'MMMM dd, yyyy')}"></span>
+            <span>&middot;</span>
+            <span th:text="${post.readingTimeMinutes + ' min read'}" class="font-mono"></span>
+        </div>
+        <div class="flex flex-wrap gap-2 mt-4">
+            <span th:each="tag : ${post.tags}" th:text="${tag}"
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50"></span>
+        </div>
+    </header>
+
+    <!-- Post content -->
+    <article class="blog-content" th:utext="${post.htmlContent}"></article>
+
+    <!-- Post footer -->
+    <footer class="mt-16 pt-8 border-t border-gray-800/50">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+                <p class="text-gray-400 text-sm">Written by <span class="text-white font-medium" th:text="${post.author}">Jawad Ali</span></p>
+                <p class="text-gray-600 text-xs mt-1">Software Engineer — Defense Systems &amp; Trading Platforms</p>
+            </div>
+            <a href="/blog" class="px-5 py-2 rounded-lg border border-gray-700 text-gray-400 text-sm font-mono hover:border-emerald-500/30 hover:text-emerald-400 transition">
+                MORE POSTS &rarr;
+            </a>
+        </div>
+    </footer>
+</main>
+
+<!-- Footer -->
+<footer class="border-t border-gray-800/50 mt-16">
+    <div class="max-w-4xl mx-auto px-6 py-8 text-center">
+        <p class="text-sm text-gray-600 font-mono">&copy; 2026 JAWAD ALI</p>
+    </div>
+</footer>
+
+</body>
+</html>

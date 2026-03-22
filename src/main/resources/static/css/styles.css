@@ -316,6 +316,129 @@ body.light #floating-cmd { background: rgba(255, 255, 255, 0.9); border-color: #
 body.light #back-to-top:hover,
 body.light #floating-cmd:hover { border-color: rgba(16, 185, 129, 0.4); }
 
+/* ── Blog content typography ────────────────────────────── */
+.blog-content {
+    color: #d1d5db;
+    line-height: 1.8;
+    font-size: 1rem;
+}
+
+.blog-content h2 {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(31, 41, 55, 0.5);
+}
+
+.blog-content h3 {
+    color: #f3f4f6;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.blog-content p {
+    margin-bottom: 1.25rem;
+}
+
+.blog-content a {
+    color: #10b981;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.blog-content a:hover {
+    color: #34d399;
+}
+
+.blog-content code {
+    background: rgba(31, 41, 55, 0.5);
+    border: 1px solid rgba(55, 65, 81, 0.5);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875em;
+    color: #10b981;
+}
+
+.blog-content pre {
+    background: #0a0f1e;
+    border: 1px solid rgba(31, 41, 55, 0.5);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+.blog-content pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #d1d5db;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.blog-content ul, .blog-content ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+}
+
+.blog-content ul { list-style-type: disc; }
+.blog-content ol { list-style-type: decimal; }
+
+.blog-content li {
+    margin-bottom: 0.5rem;
+}
+
+.blog-content blockquote {
+    border-left: 3px solid #10b981;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: #9ca3af;
+    font-style: italic;
+}
+
+.blog-content strong {
+    color: #fff;
+    font-weight: 600;
+}
+
+.blog-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+}
+
+.blog-content th, .blog-content td {
+    border: 1px solid #1f2937;
+    padding: 0.625rem 0.875rem;
+    text-align: left;
+    font-size: 0.875rem;
+}
+
+.blog-content th {
+    background: rgba(31, 41, 55, 0.3);
+    color: #e5e7eb;
+    font-weight: 600;
+}
+
+.blog-content img {
+    max-width: 100%;
+    border-radius: 0.75rem;
+    margin: 1.5rem 0;
+}
+
+.blog-content hr {
+    border: none;
+    border-top: 1px solid #1f2937;
+    margin: 2rem 0;
+}
+
 /* ── Responsive tweaks ─────────────────────────────────── */
 @media (max-width: 640px) {
     .reveal {
