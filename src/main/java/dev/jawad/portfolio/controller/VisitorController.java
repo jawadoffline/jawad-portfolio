@@ -10,6 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
@@ -20,28 +21,25 @@ public class VisitorController {
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     public VisitorController() {
-        // Broadcast visitor count every 3 seconds
         scheduler.scheduleAtFixedRate(this::broadcastCount, 0, 3, TimeUnit.SECONDS);
     }
 
     @GetMapping(value = "/api/visitors/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter streamVisitors() {
-        SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
-        int count = activeVisitors.incrementAndGet();
+        SseEmitter emitter = new SseEmitter(0L); // no timeout
+        AtomicBoolean removed = new AtomicBoolean(false);
 
         emitters.add(emitter);
+        int count = activeVisitors.incrementAndGet();
 
-        // Send initial count immediately
         try {
-            emitter.send(SseEmitter.event().name("visitors").data(count));
+            emitter.send(SseEmitter.event().name("visitors").data(Math.max(count, 1)));
         } catch (IOException e) {
-            emitter.completeWithError(e);
+            cleanup(emitter, removed);
+            return emitter;
         }
 
-        Runnable onDone = () -> {
-            emitters.remove(emitter);
-            activeVisitors.decrementAndGet();
-        };
+        Runnable onDone = () -> cleanup(emitter, removed);
 
         emitter.onCompletion(onDone);
         emitter.onTimeout(onDone);
@@ -50,8 +48,16 @@ public class VisitorController {
         return emitter;
     }
 
+    private void cleanup(SseEmitter emitter, AtomicBoolean removed) {
+        // Guard: only decrement once per emitter
+        if (removed.compareAndSet(false, true)) {
+            emitters.remove(emitter);
+            activeVisitors.updateAndGet(v -> Math.max(v - 1, 0));
+        }
+    }
+
     private void broadcastCount() {
-        int count = activeVisitors.get();
+        int count = Math.max(activeVisitors.get(), 1); // always show at least 1
         for (SseEmitter emitter : emitters) {
             try {
                 emitter.send(SseEmitter.event().name("visitors").data(count));
