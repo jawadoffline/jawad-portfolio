@@ -1,0 +1,324 @@
+/* ═══════════════════════════════════════════════════════
+   JAWAD ALI — COMMAND CENTER PORTFOLIO
+   Custom styles layered on top of Tailwind CSS
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Smooth scroll ─────────────────────────────────────── */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+}
+
+/* ── Selection color ───────────────────────────────────── */
+::selection {
+    background: rgba(16, 185, 129, 0.25);
+    color: white;
+}
+
+/* ── Custom scrollbar ──────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #030712;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1f2937;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #374151;
+}
+
+/* ── Background grid pattern ───────────────────────────── */
+.bg-grid {
+    background-image:
+        linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+}
+
+/* ── Photo glow effect ─────────────────────────────────── */
+.photo-glow {
+    box-shadow:
+        0 0 30px rgba(16, 185, 129, 0.1),
+        0 0 60px rgba(16, 185, 129, 0.05),
+        0 0 120px rgba(16, 185, 129, 0.02);
+}
+
+/* ── Skill progress bars ───────────────────────────────── */
+.skill-bar {
+    height: 4px;
+    background: rgba(16, 185, 129, 0.08);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.skill-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #06b6d4);
+    border-radius: 2px;
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ── Scroll reveal animations ──────────────────────────── */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger children */
+.reveal:nth-child(2) { transition-delay: 0.1s; }
+.reveal:nth-child(3) { transition-delay: 0.2s; }
+.reveal:nth-child(4) { transition-delay: 0.3s; }
+
+/* ── Boot sequence ─────────────────────────────────────── */
+#boot-overlay {
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#boot-overlay.hiding {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.boot-line {
+    opacity: 0;
+    transform: translateX(-5px);
+    animation: bootLineIn 0.3s ease forwards;
+}
+
+@keyframes bootLineIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ── Scroll indicator pulse ────────────────────────────── */
+.scroll-pulse {
+    animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* ── Cursor blink ──────────────────────────────────────── */
+.cursor-blink::after {
+    content: '█';
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* ── Navbar scroll effect ──────────────────────────────── */
+.navbar-scrolled {
+    background: rgba(3, 7, 18, 0.95) !important;
+    border-color: rgba(31, 41, 55, 0.8) !important;
+}
+
+/* ── Command palette ───────────────────────────────────── */
+#command-palette.active {
+    display: flex;
+}
+
+.command-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.command-item:hover,
+.command-item.selected {
+    background: rgba(16, 185, 129, 0.08);
+}
+
+.command-item .cmd-name {
+    color: #e5e7eb;
+    font-size: 0.875rem;
+}
+
+.command-item .cmd-desc {
+    color: #6b7280;
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Active nav link ───────────────────────────────────── */
+.nav-link.active {
+    color: #10b981;
+}
+
+/* ── Mobile menu transition ────────────────────────────── */
+#mobile-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+#mobile-menu.open {
+    display: block;
+    max-height: 300px;
+}
+
+/* ── Floating command pill ──────────────────────────────── */
+.cmd-float-in {
+    animation: floatIn 0.6s ease 2s both;
+}
+
+@keyframes floatIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ── Scenario buttons (Solve With Me) ──────────────────── */
+.scenario-btn {
+    background: rgba(31, 41, 55, 0.3);
+    border: 1px solid rgba(55, 65, 81, 0.5);
+    color: #9ca3af;
+}
+
+.scenario-btn:hover {
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #d1d5db;
+}
+
+.scenario-btn.active {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #10b981;
+}
+
+body.light .scenario-btn {
+    background: rgba(241, 245, 249, 0.5);
+    border-color: #d1d5db;
+    color: #64748b;
+}
+
+body.light .scenario-btn.active {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #059669;
+}
+
+/* ── Terminal cursor ───────────────────────────────────── */
+#terminal-input {
+    caret-color: #10b981;
+}
+
+/* ── Back to top button ────────────────────────────────── */
+#back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* ── Light theme ───────────────────────────────────────── */
+body.light {
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+body.light ::selection {
+    background: rgba(16, 185, 129, 0.2);
+    color: #0f172a;
+}
+
+body.light ::-webkit-scrollbar-track { background: #f8fafc; }
+body.light ::-webkit-scrollbar-thumb { background: #cbd5e1; }
+body.light ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+body.light .bg-grid {
+    background-image:
+        linear-gradient(rgba(16, 185, 129, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.06) 1px, transparent 1px);
+}
+
+body.light .photo-glow {
+    box-shadow:
+        0 0 30px rgba(16, 185, 129, 0.15),
+        0 0 60px rgba(16, 185, 129, 0.08);
+}
+
+body.light .skill-bar {
+    background: rgba(16, 185, 129, 0.12);
+}
+
+body.light .navbar-scrolled {
+    background: rgba(248, 250, 252, 0.95) !important;
+    border-color: rgba(226, 232, 240, 0.8) !important;
+}
+
+/* Light theme — text overrides */
+body.light .light-text-dark { color: #0f172a; }
+body.light .light-card { background: rgba(241, 245, 249, 0.6); }
+body.light .light-border { border-color: rgba(226, 232, 240, 0.6); }
+
+body.light .text-gray-100 { color: #1e293b; }
+body.light .text-gray-300 { color: #334155; }
+body.light .text-gray-400 { color: #475569; }
+body.light .text-gray-500 { color: #64748b; }
+body.light .text-gray-600 { color: #94a3b8; }
+body.light .text-gray-700 { color: #475569; }
+
+body.light .bg-gray-950 { background-color: #f8fafc; }
+body.light .bg-gray-900\/30 { background-color: rgba(241, 245, 249, 0.7); }
+body.light .bg-gray-900\/50 { background-color: rgba(241, 245, 249, 0.8); }
+body.light .bg-gray-800\/50 { background-color: rgba(226, 232, 240, 0.5); }
+
+body.light .border-gray-800\/50 { border-color: rgba(226, 232, 240, 0.6); }
+body.light .border-gray-800 { border-color: #e2e8f0; }
+body.light .border-gray-700\/50 { border-color: rgba(203, 213, 225, 0.5); }
+body.light .border-gray-700\/60 { border-color: rgba(203, 213, 225, 0.6); }
+
+body.light .bg-gray-800 { background-color: #e2e8f0; }
+body.light .bg-gray-900 { background-color: #f1f5f9; }
+
+body.light footer { border-color: #e2e8f0; }
+
+body.light #boot-overlay { background: #f8fafc; }
+body.light .boot-line { color: #059669; }
+body.light #boot-enter { border-color: rgba(5, 150, 105, 0.4); color: #059669; }
+body.light #boot-skip { color: #94a3b8; }
+
+body.light #command-palette > div { background: #f8fafc; border-color: #e2e8f0; }
+body.light #command-palette > div .border-b { border-color: #e2e8f0; }
+body.light .command-item:hover,
+body.light .command-item.selected { background: rgba(16, 185, 129, 0.06); }
+body.light .command-item .cmd-name { color: #1e293b; }
+
+body.light #back-to-top,
+body.light #floating-cmd { background: rgba(255, 255, 255, 0.9); border-color: #d1d5db; }
+body.light #back-to-top:hover,
+body.light #floating-cmd:hover { border-color: rgba(16, 185, 129, 0.4); }
+
+/* ── Responsive tweaks ─────────────────────────────────── */
+@media (max-width: 640px) {
+    .reveal {
+        transform: translateY(20px);
+    }
+}

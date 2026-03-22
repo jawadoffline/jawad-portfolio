@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jawad Ali — Resume</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a1a; background: #fff; font-size: 14px; line-height: 1.5; }
+
+        .page { max-width: 800px; margin: 0 auto; padding: 40px 48px; }
+
+        /* Header */
+        .header { border-bottom: 2px solid #10b981; padding-bottom: 16px; margin-bottom: 20px; }
+        .header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+        .header .contacts { font-size: 12px; color: #555; margin-top: 6px; display: flex; flex-wrap: wrap; gap: 8px; }
+        .header .contacts span::before { content: '|'; margin-right: 8px; color: #ccc; }
+        .header .contacts span:first-child::before { content: ''; margin: 0; }
+
+        /* Summary */
+        .summary { color: #333; margin-bottom: 20px; font-size: 13px; }
+
+        /* Section */
+        .section { margin-bottom: 20px; }
+        .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #10b981; border-bottom: 1px solid #e5e7eb; padding-bottom: 4px; margin-bottom: 12px; }
+
+        /* Experience entry */
+        .entry { margin-bottom: 14px; }
+        .entry-header { display: flex; justify-content: space-between; align-items: baseline; }
+        .entry-title { font-weight: 600; font-size: 14px; }
+        .entry-company { color: #555; font-size: 13px; }
+        .entry-period { font-size: 12px; color: #888; white-space: nowrap; }
+        .entry ul { margin: 4px 0 0 16px; font-size: 13px; color: #333; }
+        .entry li { margin-bottom: 2px; }
+
+        /* Skills */
+        .skills-grid { display: grid; grid-template-columns: 120px 1fr; gap: 4px 12px; font-size: 13px; }
+        .skills-grid dt { font-weight: 600; color: #555; }
+        .skills-grid dd { color: #333; }
+
+        /* Education */
+        .edu-line { display: flex; justify-content: space-between; font-size: 13px; }
+
+        /* Print button */
+        .print-bar { background: #f8fafc; border-bottom: 1px solid #e5e7eb; padding: 12px 48px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
+        .print-bar a { color: #10b981; text-decoration: none; font-size: 13px; font-weight: 500; }
+        .print-bar button { padding: 8px 20px; background: #10b981; color: white; border: none; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; font-family: inherit; }
+        .print-bar button:hover { background: #059669; }
+
+        /* Print styles */
+        @media print {
+            .print-bar { display: none; }
+            .page { padding: 0; }
+            body { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="print-bar">
+    <a href="/">&larr; Back to Portfolio</a>
+    <button onclick="window.print()">Save as PDF / Print</button>
+</div>
+
+<div class="page">
+    <div class="header">
+        <h1>JAWAD ALI</h1>
+        <div class="contacts">
+            <span>jawadali.pieas@gmail.com</span>
+            <span>(+92) 335 5668145</span>
+            <span>Islamabad, Pakistan</span>
+            <span>linkedin.com/in/jawadali21/</span>
+        </div>
+    </div>
+
+    <p class="summary">
+        Software Engineer with experience in enterprise trading platforms and mission-critical systems. Currently working on Fixed Income trading applications, focusing on high-performance GUI, application optimization, and production issue resolution. Strong background in Java (Swing, JavaFX), Spring Boot, Git-based release management, and real-time systems, with a proven record in both financial and defense-grade software environments.
+    </p>
+
+    <div class="section">
+        <div class="section-title">Experience</div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <div>
+                    <div class="entry-title">Software Engineer</div>
+                    <div class="entry-company">SoftSolutions! S.r.l., Bergamo, Italy</div>
+                </div>
+                <div class="entry-period">Sep 2025 &ndash; Present</div>
+            </div>
+            <ul>
+                <li>Working on enterprise Fixed Income trading platforms supporting RFQs, pricing, quoting, and bond execution.</li>
+                <li>Delivered Java Swing &amp; JavaFX UI enhancements and performance optimizations to improve speed, stability, and trader workflows under heavy market load.</li>
+                <li>Resolved production-critical issues across pricing, quoting, and order flows using advanced debugging and profiling.</li>
+                <li>Developed Spring Boot backend services for trading and market-data processing.</li>
+                <li>Managed Git branches, merges, and release hygiene, ensuring clean, stable production releases.</li>
+                <li>Collaborated with QA, traders, and product teams to validate fixes in fast-moving trading environments.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <div>
+                    <div class="entry-title">Software Engineer (Assistant Manager)</div>
+                    <div class="entry-company">NESCOM, Islamabad</div>
+                </div>
+                <div class="entry-period">Aug 2023 &ndash; Sep 2025</div>
+            </div>
+            <ul>
+                <li>Developed mission-critical desktop applications for UAV, AUV, and USV ground control and mission planning.</li>
+                <li>Built real-time visualization and control systems for live operational environments.</li>
+                <li>Delivered on-site deployments, operator training, and system certification for end users.</li>
+                <li>Produced technical documentation, release notes, and audit-compliant software packages (ISO/AS QMS).</li>
+                <li>Worked with C# (WPF), JavaFX, SQL, and Linux (RHEL) in high-reliability systems.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Projects</div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <div class="entry-title">BondLens &mdash; Fixed Income Analytics Platform</div>
+                <div class="entry-period">Side Project</div>
+            </div>
+            <ul>
+                <li>Full-stack analytics platform: bond pricing, portfolio DV01/duration/P&amp;L, FRED yield curve integration, IRR scenarios, callable bond analysis, duration matching, and cash flow gap ALM.</li>
+                <li>Tech: Java 21, Spring Boot 3.2, PostgreSQL, React 19, TypeScript, Recharts, Tailwind CSS.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <div class="entry-title">Real-Time Network Intrusion Detection System (ML)</div>
+                <div class="entry-period">Academic</div>
+            </div>
+            <ul>
+                <li>Trained and deployed ML models on CICIDS2017 dataset using GNS3 for live traffic analysis.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Education</div>
+        <div class="edu-line">
+            <div><strong>BS, Computer Science</strong> &mdash; PIEAS, Islamabad</div>
+            <div class="entry-period">2019 &ndash; 2023 | CGPA 3.70</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Skills &amp; Tools</div>
+        <dl class="skills-grid">
+            <dt>Languages</dt>
+            <dd>Java (Swing, JavaFX), C# (WPF), SQL</dd>
+            <dt>Frameworks</dt>
+            <dd>Spring Boot, JavaFX, WPF (.NET)</dd>
+            <dt>Trading</dt>
+            <dd>Fixed Income Platforms, RFQ &amp; Quoting Workflows, Real-time Trading UI</dd>
+            <dt>Tools</dt>
+            <dd>IntelliJ IDEA, Git, Jira, Linux (RHEL), Visual Studio</dd>
+            <dt>Practices</dt>
+            <dd>Performance Optimization, Debugging &amp; Profiling, Release Management, Production Support</dd>
+        </dl>
+    </div>
+</div>
+
+</body>
+</html>

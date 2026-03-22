@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jawad Ali — Software Engineer</title>
+    <meta name="description" content="Software Engineer building mission-critical defense systems and high-performance trading platforms. From UAV ground control to fixed income trading floors.">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Jawad Ali — Software Engineer">
+    <meta property="og:description" content="I build software where milliseconds matter and failure isn't an option.">
+    <meta property="og:image" content="/images/jawad.jpeg">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23030712'/><text y='.88em' font-size='80' font-family='monospace' font-weight='bold' fill='%2310b981' x='50%25' text-anchor='middle'>J</text></svg>">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Consolas', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans antialiased">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SCROLL PROGRESS BAR
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="scroll-progress" class="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-emerald-500 to-cyan-400 z-50 transition-none" style="width:0%"></div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BOOT SEQUENCE OVERLAY
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="boot-overlay" class="fixed inset-0 z-50 bg-black flex items-center justify-center cursor-pointer">
+    <div class="max-w-lg w-full px-6">
+        <div id="boot-lines" class="font-mono text-emerald-400 text-sm space-y-1">
+            <!-- Lines injected by JS -->
+        </div>
+        <button id="boot-enter" class="hidden mt-8 px-8 py-3 border border-emerald-500/50 text-emerald-400 font-mono text-sm hover:bg-emerald-500/10 transition rounded-lg tracking-wider">
+            [ ENTER COMMAND CENTER ]
+        </button>
+        <p id="boot-skip" class="absolute bottom-8 right-8 text-gray-600 text-xs font-mono">
+            click anywhere or press any key to skip
+        </p>
+    </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     NAVBAR
+     ═══════════════════════════════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 w-full z-40 transition-all duration-300 bg-gray-950/80 backdrop-blur-md border-b border-gray-800/50" style="opacity:0">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="#hero" class="font-mono font-bold text-emerald-400 text-lg tracking-wider hover:text-emerald-300 transition">
+            JAWAD<span class="text-gray-600">.</span>ALI
+        </a>
+
+        <!-- Desktop nav -->
+        <div class="hidden md:flex items-center gap-8">
+            <a href="#missions" class="nav-link text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">MISSIONS</a>
+            <a href="#operations" class="nav-link text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">OPERATIONS</a>
+            <a href="#systems" class="nav-link text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">SYSTEMS</a>
+            <a href="#comms" class="nav-link text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">COMMS</a>
+            <a href="#terminal" class="nav-link text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">TERMINAL</a>
+            <!-- Command palette trigger -->
+            <button id="cmd-trigger" onclick="document.getElementById('command-palette').classList.add('active'); document.getElementById('command-input').focus();"
+                    class="flex items-center gap-3 ml-4 pl-4 border-l border-gray-800 px-3 py-1.5 rounded-lg bg-gray-800/50 border border-gray-700/50 hover:border-emerald-500/30 hover:bg-gray-800 transition group cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-gray-500 group-hover:text-emerald-400 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <span class="text-xs text-gray-500 font-mono group-hover:text-gray-400 transition">Command Center</span>
+                <kbd class="text-[10px] text-gray-600 font-mono border border-gray-700 px-1.5 py-0.5 rounded">/</kbd>
+            </button>
+            <!-- Theme toggle -->
+            <button id="theme-toggle" class="ml-3 p-2 rounded-lg text-gray-500 hover:text-emerald-400 hover:bg-gray-800/50 transition" title="Toggle theme">
+                <svg id="theme-icon-dark" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                </svg>
+                <svg id="theme-icon-light" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+            </button>
+            <div class="flex items-center gap-1.5 ml-2" title="Live visitor count">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-xs font-mono text-emerald-400"><span id="visitor-count">1</span> online</span>
+            </div>
+        </div>
+
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-btn" class="md:hidden text-gray-400 hover:text-white p-2">
+            <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800/50 bg-gray-950/95 backdrop-blur-md">
+        <div class="px-6 py-4 flex flex-col gap-3">
+            <a href="#missions" class="mobile-nav-link text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide py-2">MISSIONS</a>
+            <a href="#operations" class="mobile-nav-link text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide py-2">OPERATIONS</a>
+            <a href="#systems" class="mobile-nav-link text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide py-2">SYSTEMS</a>
+            <a href="#comms" class="mobile-nav-link text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide py-2">COMMS</a>
+            <a href="#terminal" class="mobile-nav-link text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide py-2">TERMINAL</a>
+        </div>
+    </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HERO SECTION
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="hero" class="min-h-screen flex items-center relative overflow-hidden">
+    <!-- Background effects -->
+    <div class="absolute inset-0 bg-grid opacity-100"></div>
+    <div class="absolute top-1/3 left-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-1/4 right-1/3 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl"></div>
+
+    <div class="max-w-6xl mx-auto px-6 py-32 grid lg:grid-cols-5 gap-12 lg:gap-16 items-center relative z-10 w-full">
+        <!-- Photo (2 cols) -->
+        <div class="lg:col-span-2 flex justify-center reveal">
+            <div class="relative">
+                <div class="w-56 h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72 rounded-full overflow-hidden photo-glow ring-2 ring-emerald-500/20">
+                    <img th:src="@{/images/jawad.jpeg}" alt="Jawad Ali" class="w-full h-full object-cover" loading="eager" fetchpriority="high">
+                </div>
+                <!-- Status badge -->
+                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-gray-900/95 px-4 py-2 rounded-full border border-emerald-500/20 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="text-xs font-mono text-emerald-400 whitespace-nowrap">ACTIVE — BERGAMO, IT</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Text (3 cols) -->
+        <div class="lg:col-span-3 text-center lg:text-left">
+            <p class="font-mono text-emerald-400 text-sm mb-4 tracking-widest reveal">SOFTWARE ENGINEER</p>
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[0.95] tracking-tight reveal">
+                JAWAD<br>ALI
+            </h1>
+
+            <p class="text-xl sm:text-2xl text-gray-400 mt-6 max-w-xl leading-relaxed reveal">
+                I build software where
+                <span class="text-white font-semibold">milliseconds matter</span>
+                and
+                <span class="text-white font-semibold">failure isn't an option</span>.
+            </p>
+
+            <!-- Typing subtitle -->
+            <p class="text-gray-500 mt-3 max-w-lg reveal font-mono text-sm">
+                <span class="text-emerald-400/60">&gt;</span>
+                Currently: <span id="typing-text" class="text-gray-400"></span><span class="cursor-blink"></span>
+            </p>
+
+            <!-- Animated stats -->
+            <div class="flex justify-center lg:justify-start gap-10 mt-10 reveal">
+                <div class="text-center lg:text-left">
+                    <div class="flex items-baseline gap-0.5 justify-center lg:justify-start">
+                        <span class="text-3xl sm:text-4xl font-bold text-emerald-400 counter" data-target="3">0</span>
+                        <span class="text-xl font-bold text-emerald-400">+</span>
+                    </div>
+                    <p class="text-xs text-gray-500 font-mono mt-1 tracking-wider">YEARS</p>
+                </div>
+                <div class="w-px bg-gray-800"></div>
+                <div class="text-center lg:text-left">
+                    <span class="text-3xl sm:text-4xl font-bold text-emerald-400 counter" data-target="2">0</span>
+                    <p class="text-xs text-gray-500 font-mono mt-1 tracking-wider">DOMAINS</p>
+                </div>
+                <div class="w-px bg-gray-800"></div>
+                <div class="text-center lg:text-left">
+                    <div class="flex items-baseline gap-0.5 justify-center lg:justify-start">
+                        <span class="text-3xl sm:text-4xl font-bold text-emerald-400 counter" data-target="10">0</span>
+                        <span class="text-xl font-bold text-emerald-400">+</span>
+                    </div>
+                    <p class="text-xs text-gray-500 font-mono mt-1 tracking-wider">SYSTEMS</p>
+                </div>
+            </div>
+
+            <!-- CTAs -->
+            <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 mt-10 reveal">
+                <a href="#operations" class="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-gray-950 font-bold rounded-lg transition text-center text-sm tracking-wide">
+                    VIEW OPERATIONS &darr;
+                </a>
+                <a href="/resume" target="_blank" class="px-8 py-3.5 border border-gray-700 hover:border-emerald-500/50 hover:text-emerald-400 text-gray-300 font-medium rounded-lg transition text-center text-sm tracking-wide">
+                    DOWNLOAD BRIEF
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-600 reveal">
+        <span class="text-xs font-mono tracking-wider">SCROLL</span>
+        <div class="w-px h-8 bg-gradient-to-b from-gray-600 to-transparent scroll-pulse"></div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     THE EDGE — WHAT SETS HIM APART
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="relative border-t border-gray-800/50">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+        <p class="font-mono text-emerald-400/60 text-xs tracking-widest mb-4 reveal">THE SHORT VERSION</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-16 max-w-3xl leading-snug reveal">
+            Most engineers pick a lane.<br>
+            <span class="text-gray-500">I picked two of the hardest.</span>
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="group p-8 rounded-2xl bg-gray-900/50 border border-gray-800/50 hover:border-emerald-500/20 transition-all duration-300 reveal">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-6 group-hover:bg-emerald-500/20 transition">
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-3">Defense-Grade Reliability</h3>
+                <p class="text-gray-400 leading-relaxed text-sm">
+                    Built mission-critical software for UAV and marine systems at NESCOM. When your code controls unmanned vehicles in live operations, you learn what "failure is not an option" really means.
+                </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="group p-8 rounded-2xl bg-gray-900/50 border border-gray-800/50 hover:border-emerald-500/20 transition-all duration-300 reveal">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-6 group-hover:bg-emerald-500/20 transition">
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-3">Trading-Floor Speed</h3>
+                <p class="text-gray-400 leading-relaxed text-sm">
+                    Now optimizing enterprise Fixed Income trading platforms at SoftSolutions. Every millisecond in a trader's workflow is money. I profile, optimize, and deliver measurable performance gains.
+                </p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="group p-8 rounded-2xl bg-gray-900/50 border border-gray-800/50 hover:border-emerald-500/20 transition-all duration-300 reveal">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-6 group-hover:bg-emerald-500/20 transition">
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-3">Full Cycle Engineer</h3>
+                <p class="text-gray-400 leading-relaxed text-sm">
+                    I don't just write code and throw it over the wall. Architecture to deployment to operator training &mdash; I ship complete systems and make sure the people using them can actually use them.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MISSION LOG (Career)
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="missions" class="relative border-t border-gray-800/50">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+        <p class="font-mono text-emerald-400/60 text-xs tracking-widest mb-4 reveal">CAREER TIMELINE</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-16 reveal">Mission Log</h2>
+
+        <div class="space-y-0">
+            <!-- Mission 01: SoftSolutions -->
+            <div class="relative pl-8 pb-16 border-l border-gray-800 last:pb-0 reveal">
+                <!-- Timeline dot -->
+                <div class="absolute left-0 top-0 w-3 h-3 rounded-full bg-emerald-400 -translate-x-[7px] ring-4 ring-gray-950"></div>
+                <!-- Active pulse -->
+                <div class="absolute left-0 top-0 w-3 h-3 rounded-full bg-emerald-400 -translate-x-[7px] animate-ping opacity-30"></div>
+
+                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Software Engineer</h3>
+                        <p class="text-emerald-400 font-mono text-sm">SoftSolutions! S.r.l. &mdash; Bergamo, Italy</p>
+                    </div>
+                    <span class="inline-flex items-center gap-2 text-xs font-mono bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/20 self-start">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        SEP 2025 &mdash; PRESENT
+                    </span>
+                </div>
+
+                <div class="text-gray-400 space-y-2 text-sm leading-relaxed max-w-3xl">
+                    <p>Enterprise Fixed Income trading platform &mdash; RFQs, pricing, quoting, and bond execution workflows.</p>
+                    <ul class="space-y-1.5 ml-4">
+                        <li class="flex gap-2"><span class="text-emerald-500 mt-0.5">&rsaquo;</span>Delivered Java Swing &amp; JavaFX UI enhancements and performance optimizations under heavy market load</li>
+                        <li class="flex gap-2"><span class="text-emerald-500 mt-0.5">&rsaquo;</span>Resolved production-critical issues across pricing, quoting, and order flows using advanced debugging &amp; profiling</li>
+                        <li class="flex gap-2"><span class="text-emerald-500 mt-0.5">&rsaquo;</span>Developed Spring Boot backend services for trading and market-data processing</li>
+                        <li class="flex gap-2"><span class="text-emerald-500 mt-0.5">&rsaquo;</span>Managed Git branches, merges, and release hygiene for clean production releases</li>
+                    </ul>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mt-4">
+                    <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Java Swing</span>
+                    <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">JavaFX</span>
+                    <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Spring Boot</span>
+                    <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Git</span>
+                </div>
+            </div>
+
+            <!-- Mission 02: NESCOM -->
+            <div class="relative pl-8 pb-16 border-l border-gray-800 reveal">
+                <div class="absolute left-0 top-0 w-3 h-3 rounded-full bg-gray-600 -translate-x-[7px] ring-4 ring-gray-950"></div>
+
+                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Software Engineer <span class="text-gray-500 font-normal text-base">(Assistant Manager)</span></h3>
+                        <p class="text-gray-400 font-mono text-sm">NESCOM &mdash; Islamabad, Pakistan</p>
+                    </div>
+                    <span class="text-xs font-mono text-gray-500 bg-gray-800/50 px-3 py-1 rounded-full self-start">
+                        AUG 2023 &mdash; SEP 2025
+                    </span>
+                </div>
+
+                <div class="text-gray-400 space-y-2 text-sm leading-relaxed max-w-3xl">
+                    <p>Mission-critical desktop applications for UAV, AUV, and USV ground control and mission planning.</p>
+                    <ul class="space-y-1.5 ml-4">
+                        <li class="flex gap-2"><span class="text-emerald-500 mt-0.5">&rsaquo;</span>Built real-time visualization and control systems for live operational environments</li>
+                        <li class="flex gap-2"><span class="text-emerald-500 mt-0.5">&rsaquo;</span>Delivered on-site deployments, operator training, and system certification for end users</li>
+                        <li class="flex gap-2"><span class="text-emerald-500 mt-0.5">&rsaquo;</span>Produced technical documentation, release notes, and audit-compliant software packages (ISO/AS QMS)</li>
+                    </ul>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mt-4">
+                    <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">C# WPF</span>
+                    <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">JavaFX</span>
+                    <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">SQL</span>
+                    <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Linux RHEL</span>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div class="relative pl-8 border-l border-gray-800 reveal">
+                <div class="absolute left-0 top-0 w-3 h-3 rounded-full bg-gray-700 -translate-x-[7px] ring-4 ring-gray-950"></div>
+
+                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">BS Computer Science</h3>
+                        <p class="text-gray-400 font-mono text-sm">PIEAS &mdash; Pakistan Institute of Engineering &amp; Applied Sciences</p>
+                    </div>
+                    <span class="text-xs font-mono text-gray-500 bg-gray-800/50 px-3 py-1 rounded-full self-start">
+                        2019 &mdash; 2023
+                    </span>
+                </div>
+                <p class="text-gray-500 text-sm">CGPA 3.70 &mdash; Islamabad, Pakistan</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     OPERATIONS (Projects)
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="operations" class="relative border-t border-gray-800/50">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+        <p class="font-mono text-emerald-400/60 text-xs tracking-widest mb-4 reveal">PROJECTS & CASE STUDIES</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-16 reveal">Operations</h2>
+
+        <div class="space-y-8">
+
+            <!-- Operation: BondLens -->
+            <article class="group rounded-2xl bg-gray-900/30 border border-gray-800/50 hover:border-emerald-500/20 transition-all duration-300 overflow-hidden reveal">
+                <div class="p-8 sm:p-10">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+                        <h3 class="text-2xl font-bold text-white">BondLens</h3>
+                        <span class="inline-flex items-center gap-1.5 text-xs font-mono bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 self-start">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ACTIVE
+                        </span>
+                        <span class="text-xs font-mono text-gray-600 sm:ml-auto">SIDE PROJECT</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <p class="font-mono text-xs text-emerald-400/60 tracking-wider mb-2">SITUATION</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Small banks, credit unions, and family offices can't afford Bloomberg Terminal ($24k/year). They need fixed income analytics but have zero tooling.
+                            </p>
+                        </div>
+                        <div>
+                            <p class="font-mono text-xs text-emerald-400/60 tracking-wider mb-2">ACTION</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Built a full-stack analytics platform from scratch &mdash; bond pricing engine, portfolio DV01/duration/P&amp;L, FRED yield curve with G-spread, IRR scenarios, callable bond total return analysis, duration matching, and cash flow gap ALM.
+                            </p>
+                        </div>
+                        <div>
+                            <p class="font-mono text-xs text-emerald-400/60 tracking-wider mb-2">RESULT</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Production-grade platform covering the full fixed income analytics spectrum. Proves ability to translate complex financial domain knowledge into usable software.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mt-6 pt-6 border-t border-gray-800/50">
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Java 21</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Spring Boot 3.2</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">PostgreSQL</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">React 19</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">TypeScript</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Recharts</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Operation: Trading Platform -->
+            <article class="group rounded-2xl bg-gray-900/30 border border-gray-800/50 hover:border-emerald-500/20 transition-all duration-300 overflow-hidden reveal">
+                <div class="p-8 sm:p-10">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+                        <h3 class="text-2xl font-bold text-white">Fixed Income Trading Platform</h3>
+                        <span class="inline-flex items-center gap-1.5 text-xs font-mono bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 self-start">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ACTIVE
+                        </span>
+                        <span class="text-xs font-mono text-gray-600 sm:ml-auto">PROFESSIONAL</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <p class="font-mono text-xs text-emerald-400/60 tracking-wider mb-2">SITUATION</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Enterprise trading platform supporting RFQs, pricing, quoting, and bond execution had accumulated performance bottlenecks impacting trader workflows.
+                            </p>
+                        </div>
+                        <div>
+                            <p class="font-mono text-xs text-emerald-400/60 tracking-wider mb-2">ACTION</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Delivered Java Swing &amp; JavaFX UI enhancements and performance optimizations. Resolved production-critical issues across pricing, quoting, and order flows using advanced debugging and profiling techniques.
+                            </p>
+                        </div>
+                        <div>
+                            <p class="font-mono text-xs text-emerald-400/60 tracking-wider mb-2">RESULT</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Measurably improved trader workflow speed and stability. Maintained clean release hygiene through disciplined Git branch management and cross-team QA collaboration.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mt-6 pt-6 border-t border-gray-800/50">
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Java Swing</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">JavaFX</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Spring Boot</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Performance Profiling</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Operation: GCS -->
+            <article class="group rounded-2xl bg-gray-900/30 border border-gray-800/50 hover:border-emerald-500/20 transition-all duration-300 overflow-hidden reveal">
+                <div class="p-8 sm:p-10">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+                        <h3 class="text-2xl font-bold text-white">Ground Control &amp; Mission Planning</h3>
+                        <span class="text-xs font-mono text-gray-500 bg-gray-800/50 px-2.5 py-1 rounded-full self-start">COMPLETED</span>
+                        <span class="text-xs font-mono text-gray-600 sm:ml-auto">DEFENSE / NESCOM</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <p class="font-mono text-xs text-emerald-400/60 tracking-wider mb-2">SITUATION</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Military operators needed reliable, intuitive software to monitor and control unmanned aerial, underwater, and surface vehicles in real-time operations.
+                            </p>
+                        </div>
+                        <div>
+                            <p class="font-mono text-xs text-emerald-400/60 tracking-wider mb-2">ACTION</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Developed ground control stations and mission planning tools for UAVs, AUVs, and USVs. Built real-time visualization systems, conducted on-site deployments and operator training. ISO/AS QMS certified.
+                            </p>
+                        </div>
+                        <div>
+                            <p class="font-mono text-xs text-emerald-400/60 tracking-wider mb-2">RESULT</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Delivered mission-critical software used by defense operators in the field. Built reputation for shipping software where failure has real-world consequences.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mt-6 pt-6 border-t border-gray-800/50">
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">C# WPF</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">JavaFX</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">SQL</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Linux RHEL</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Real-Time Systems</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Operation: Network IDS -->
+            <article class="group rounded-2xl bg-gray-900/30 border border-gray-800/50 hover:border-emerald-500/20 transition-all duration-300 overflow-hidden reveal">
+                <div class="p-8 sm:p-10">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+                        <h3 class="text-2xl font-bold text-white">Real-Time Network Intrusion Detection</h3>
+                        <span class="text-xs font-mono text-gray-500 bg-gray-800/50 px-2.5 py-1 rounded-full self-start">COMPLETED</span>
+                        <span class="text-xs font-mono text-gray-600 sm:ml-auto">ACADEMIC / PIEAS</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <p class="font-mono text-xs text-emerald-400/60 tracking-wider mb-2">SITUATION</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Network security teams need real-time detection of intrusions without drowning in false positives.
+                            </p>
+                        </div>
+                        <div>
+                            <p class="font-mono text-xs text-emerald-400/60 tracking-wider mb-2">ACTION</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Trained and deployed ML models on the CICIDS2017 dataset. Used GNS3 network simulation for live traffic analysis and real-time classification.
+                            </p>
+                        </div>
+                        <div>
+                            <p class="font-mono text-xs text-emerald-400/60 tracking-wider mb-2">RESULT</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Working IDS system capable of real-time network traffic classification. Demonstrated ability to apply ML to practical security problems.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mt-6 pt-6 border-t border-gray-800/50">
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Python</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">Machine Learning</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">GNS3</span>
+                        <span class="px-2.5 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-400 border border-gray-700/50">CICIDS2017</span>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SYSTEMS DIAGNOSTIC (Skills)
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="systems" class="relative border-t border-gray-800/50">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+        <p class="font-mono text-emerald-400/60 text-xs tracking-widest mb-4 reveal">TECHNICAL CAPABILITIES</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-16 reveal">Systems Diagnostic</h2>
+
+        <div class="grid md:grid-cols-2 gap-8">
+
+            <!-- Languages -->
+            <div class="p-8 rounded-2xl bg-gray-900/30 border border-gray-800/50 reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <h3 class="font-mono text-sm text-emerald-400 tracking-wider">LANGUAGES</h3>
+                    <span class="text-xs font-mono text-gray-600 ml-auto">ALL SYSTEMS GO</span>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">Java</span>
+                            <span class="text-gray-500 font-mono text-xs">PRIMARY</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="95"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">C# (WPF)</span>
+                            <span class="text-gray-500 font-mono text-xs">PROFICIENT</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="75"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">SQL</span>
+                            <span class="text-gray-500 font-mono text-xs">ADVANCED</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="80"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">Python</span>
+                            <span class="text-gray-500 font-mono text-xs">WORKING</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="55"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Frameworks -->
+            <div class="p-8 rounded-2xl bg-gray-900/30 border border-gray-800/50 reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <h3 class="font-mono text-sm text-emerald-400 tracking-wider">FRAMEWORKS &amp; UI</h3>
+                    <span class="text-xs font-mono text-gray-600 ml-auto">OPERATIONAL</span>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">Spring Boot</span>
+                            <span class="text-gray-500 font-mono text-xs">PRIMARY</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="90"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">Java Swing</span>
+                            <span class="text-gray-500 font-mono text-xs">ADVANCED</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="85"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">JavaFX</span>
+                            <span class="text-gray-500 font-mono text-xs">ADVANCED</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="85"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">WPF (.NET)</span>
+                            <span class="text-gray-500 font-mono text-xs">PROFICIENT</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="70"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools -->
+            <div class="p-8 rounded-2xl bg-gray-900/30 border border-gray-800/50 reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <h3 class="font-mono text-sm text-emerald-400 tracking-wider">TOOLS &amp; PLATFORMS</h3>
+                    <span class="text-xs font-mono text-gray-600 ml-auto">NOMINAL</span>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">Git &amp; Release Management</span>
+                            <span class="text-gray-500 font-mono text-xs">PRIMARY</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="90"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">IntelliJ IDEA</span>
+                            <span class="text-gray-500 font-mono text-xs">DAILY</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="90"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">Linux (RHEL)</span>
+                            <span class="text-gray-500 font-mono text-xs">PROFICIENT</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="70"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">Jira &amp; Agile</span>
+                            <span class="text-gray-500 font-mono text-xs">DAILY</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="85"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Domains -->
+            <div class="p-8 rounded-2xl bg-gray-900/30 border border-gray-800/50 reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <h3 class="font-mono text-sm text-emerald-400 tracking-wider">DOMAIN EXPERTISE</h3>
+                    <span class="text-xs font-mono text-gray-600 ml-auto">SPECIALIST</span>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">Fixed Income / Trading</span>
+                            <span class="text-gray-500 font-mono text-xs">ACTIVE</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="85"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">Defense &amp; Aerospace</span>
+                            <span class="text-gray-500 font-mono text-xs">VETERAN</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="85"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">Performance Optimization</span>
+                            <span class="text-gray-500 font-mono text-xs">CORE</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="90"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1.5">
+                            <span class="text-gray-300 font-medium">Real-Time / Mission-Critical</span>
+                            <span class="text-gray-500 font-mono text-xs">CORE</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-bar-fill" data-width="90"></div></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Engineering practices -->
+        <div class="mt-8 p-8 rounded-2xl bg-gray-900/30 border border-gray-800/50 reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <h3 class="font-mono text-sm text-emerald-400 tracking-wider">ENGINEERING PRACTICES</h3>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <span class="px-4 py-2 rounded-lg bg-gray-800/50 text-gray-300 text-sm border border-gray-700/50 hover:border-emerald-500/30 transition">Performance Optimization</span>
+                <span class="px-4 py-2 rounded-lg bg-gray-800/50 text-gray-300 text-sm border border-gray-700/50 hover:border-emerald-500/30 transition">Debugging &amp; Profiling</span>
+                <span class="px-4 py-2 rounded-lg bg-gray-800/50 text-gray-300 text-sm border border-gray-700/50 hover:border-emerald-500/30 transition">Release &amp; Branch Management</span>
+                <span class="px-4 py-2 rounded-lg bg-gray-800/50 text-gray-300 text-sm border border-gray-700/50 hover:border-emerald-500/30 transition">Production Support</span>
+                <span class="px-4 py-2 rounded-lg bg-gray-800/50 text-gray-300 text-sm border border-gray-700/50 hover:border-emerald-500/30 transition">High-Performance Applications</span>
+                <span class="px-4 py-2 rounded-lg bg-gray-800/50 text-gray-300 text-sm border border-gray-700/50 hover:border-emerald-500/30 transition">RFQ &amp; Trading Workflows</span>
+                <span class="px-4 py-2 rounded-lg bg-gray-800/50 text-gray-300 text-sm border border-gray-700/50 hover:border-emerald-500/30 transition">ISO/AS QMS Compliance</span>
+                <span class="px-4 py-2 rounded-lg bg-gray-800/50 text-gray-300 text-sm border border-gray-700/50 hover:border-emerald-500/30 transition">End-User Training</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     LIVE TERMINAL
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="terminal" class="relative border-t border-gray-800/50">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+        <p class="font-mono text-emerald-400/60 text-xs tracking-widest mb-4 reveal">INTERACTIVE</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4 reveal">Live Terminal</h2>
+        <p class="text-gray-500 mb-10 max-w-lg text-sm reveal">Explore my background the engineer's way. This is a real Spring Boot endpoint &mdash; every command hits the server and returns server-rendered HTML via HTMX.</p>
+
+        <div class="rounded-2xl bg-gray-900/50 border border-gray-800/50 overflow-hidden reveal relative">
+            <!-- Matrix rain canvas (toggled by terminal command) -->
+            <canvas id="matrix-canvas" class="absolute inset-0 w-full h-full pointer-events-none opacity-0 transition-opacity duration-500" style="z-index:0"></canvas>
+
+            <!-- Terminal header bar -->
+            <div class="flex items-center gap-2 px-4 py-3 bg-gray-900/80 border-b border-gray-800/50">
+                <span class="w-3 h-3 rounded-full bg-red-500/60"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-500/60"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-500/60"></span>
+                <span class="ml-3 text-xs text-gray-500 font-mono">visitor@jawad:~</span>
+            </div>
+
+            <!-- Terminal body -->
+            <div id="terminal-body" class="p-4 sm:p-6 font-mono text-sm max-h-[500px] overflow-y-auto space-y-3">
+                <!-- Welcome message -->
+                <div>
+                    <pre class="text-emerald-400/80 text-xs leading-relaxed">Welcome to Jawad's portfolio terminal.
+Type 'help' for available commands.</pre>
+                </div>
+
+                <!-- Output history (HTMX appends here) -->
+                <div id="terminal-history"></div>
+
+                <!-- Input line -->
+                <div class="flex gap-2 items-center">
+                    <span class="text-emerald-400 select-none whitespace-nowrap">visitor@jawad:~$</span>
+                    <input id="terminal-input" type="text"
+                           class="flex-1 bg-transparent text-gray-300 text-sm focus:outline-none font-mono placeholder-gray-700 caret-emerald-400"
+                           placeholder="type a command..."
+                           autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SOLVE WITH ME — INTERACTIVE WALKTHROUGH
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="solve" class="relative border-t border-gray-800/50">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+        <p class="font-mono text-emerald-400/60 text-xs tracking-widest mb-4 reveal">HOW I THINK</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4 reveal">Solve With Me</h2>
+        <p class="text-gray-500 mb-10 max-w-lg text-sm reveal">Walk through how I'd approach a real production problem. Click through the steps to see my debugging process.</p>
+
+        <!-- Scenario selector -->
+        <div class="flex flex-wrap gap-3 mb-8 reveal">
+            <button class="scenario-btn active px-4 py-2 rounded-lg text-sm font-mono transition" data-scenario="slow-ui">
+                Slow Trading UI
+            </button>
+            <button class="scenario-btn px-4 py-2 rounded-lg text-sm font-mono transition" data-scenario="memory-leak">
+                Memory Leak in GCS
+            </button>
+            <button class="scenario-btn px-4 py-2 rounded-lg text-sm font-mono transition" data-scenario="architecture">
+                Designing BondLens
+            </button>
+        </div>
+
+        <!-- Walkthrough card -->
+        <div class="rounded-2xl bg-gray-900/30 border border-gray-800/50 overflow-hidden reveal">
+            <!-- Progress bar -->
+            <div class="h-1 bg-gray-800">
+                <div id="solve-progress" class="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 transition-all duration-500" style="width: 0%"></div>
+            </div>
+
+            <div class="p-8 sm:p-10">
+                <!-- Step indicator -->
+                <div class="flex items-center gap-3 mb-6">
+                    <span id="solve-step-badge" class="px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">STEP 1 / 5</span>
+                    <span id="solve-phase" class="text-xs text-gray-500 font-mono">IDENTIFY</span>
+                </div>
+
+                <!-- Step content -->
+                <div id="solve-content">
+                    <h3 id="solve-title" class="text-xl font-bold text-white mb-4"></h3>
+                    <div id="solve-body" class="text-gray-400 text-sm leading-relaxed space-y-3"></div>
+                    <div id="solve-code" class="mt-6 p-4 rounded-lg bg-gray-950/50 border border-gray-800/50 font-mono text-xs text-emerald-400/80 whitespace-pre-wrap hidden"></div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="flex items-center justify-between mt-8 pt-6 border-t border-gray-800/50">
+                    <button id="solve-prev" class="px-5 py-2 rounded-lg border border-gray-700 text-gray-400 text-sm font-mono hover:border-emerald-500/30 hover:text-emerald-400 transition disabled:opacity-30 disabled:cursor-not-allowed" disabled>
+                        &larr; PREV
+                    </button>
+                    <div id="solve-dots" class="flex gap-2"></div>
+                    <button id="solve-next" class="px-5 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-mono hover:bg-emerald-500/20 transition">
+                        NEXT &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     COMMS CHANNEL (Contact)
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="comms" class="relative border-t border-gray-800/50">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+        <p class="font-mono text-emerald-400/60 text-xs tracking-widest mb-4 reveal">LET'S CONNECT</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-16 reveal">Comms Channel</h2>
+
+        <div class="grid lg:grid-cols-2 gap-12">
+            <!-- Contact info -->
+            <div class="reveal">
+                <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-md">
+                    Looking for an engineer who ships reliable, high-performance systems? Let's talk.
+                </p>
+
+                <div class="space-y-4">
+                    <a href="mailto:jawadali.pieas@gmail.com" class="flex items-center gap-4 p-4 rounded-xl bg-gray-900/30 border border-gray-800/50 hover:border-emerald-500/20 transition group">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition">
+                            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 font-mono">EMAIL</p>
+                            <p class="text-gray-300">jawadali.pieas@gmail.com</p>
+                        </div>
+                    </a>
+
+                    <a href="https://linkedin.com/in/jawadali21/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-4 rounded-xl bg-gray-900/30 border border-gray-800/50 hover:border-emerald-500/20 transition group">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition">
+                            <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 font-mono">LINKEDIN</p>
+                            <p class="text-gray-300">linkedin.com/in/jawadali21</p>
+                        </div>
+                    </a>
+
+                    <div class="flex items-center gap-4 p-4 rounded-xl bg-gray-900/30 border border-gray-800/50">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 font-mono">LOCATION</p>
+                            <p class="text-gray-300">Bergamo, Italy <span class="text-gray-600">(from Islamabad, Pakistan)</span></p>
+                        </div>
+                    </div>
+
+                    <a href="tel:+923355668145" class="flex items-center gap-4 p-4 rounded-xl bg-gray-900/30 border border-gray-800/50 hover:border-emerald-500/20 transition group">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition">
+                            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 font-mono">PHONE</p>
+                            <p class="text-gray-300">(+92) 335 5668145</p>
+                        </div>
+                    </a>
+                    <!-- vCard download -->
+                    <a href="/api/vcard" download="jawad-ali.vcf" class="flex items-center gap-4 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20 hover:bg-emerald-500/10 transition group">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition">
+                            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-emerald-400 font-mono">SAVE MY CONTACT</p>
+                            <p class="text-gray-400 text-xs">One-click vCard download — add me to your contacts</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Contact form -->
+            <div class="reveal">
+                <div id="contact-form" class="p-8 rounded-2xl bg-gray-900/30 border border-gray-800/50">
+                    <div class="flex items-center gap-2 mb-6">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                        <p class="font-mono text-xs text-emerald-400 tracking-wider">SECURE CHANNEL</p>
+                    </div>
+
+                    <form hx-post="/contact" hx-target="#contact-form" hx-swap="innerHTML" class="space-y-5">
+                        <div>
+                            <label for="name" class="block text-sm text-gray-400 font-mono mb-2">NAME</label>
+                            <input type="text" id="name" name="name" required
+                                   class="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-100 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition placeholder-gray-600"
+                                   placeholder="Your name">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm text-gray-400 font-mono mb-2">EMAIL</label>
+                            <input type="email" id="email" name="email" required
+                                   class="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-100 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition placeholder-gray-600"
+                                   placeholder="you@company.com">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm text-gray-400 font-mono mb-2">MESSAGE</label>
+                            <textarea id="message" name="message" required rows="4"
+                                      class="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-100 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition placeholder-gray-600 resize-none"
+                                      placeholder="What would you like to discuss?"></textarea>
+                        </div>
+                        <button type="submit"
+                                class="w-full px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-gray-950 font-bold rounded-lg transition text-sm tracking-wide">
+                            TRANSMIT MESSAGE
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     COMMAND PALETTE (Easter Egg - Press / to open)
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="command-palette" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div class="w-full max-w-lg mx-4 bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl overflow-hidden">
+        <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-800">
+            <span class="text-emerald-400 font-mono text-sm">&gt;</span>
+            <input id="command-input" type="text" placeholder="Type a command... (try 'help')"
+                   class="flex-1 bg-transparent text-gray-100 text-sm focus:outline-none placeholder-gray-600 font-mono"
+                   autocomplete="off">
+            <kbd class="text-xs text-gray-600 font-mono border border-gray-700 px-1.5 py-0.5 rounded">ESC</kbd>
+        </div>
+        <div id="command-results" class="max-h-64 overflow-y-auto p-2">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     REAL CODE SHOWCASE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="relative border-t border-gray-800/50">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+        <p class="font-mono text-emerald-400/60 text-xs tracking-widest mb-4 reveal">PROOF, NOT PROMISES</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4 reveal">My Actual Code</h2>
+        <p class="text-gray-500 mb-10 max-w-lg text-sm reveal">Anyone can list "Java" on a resume. Here's what my Java actually looks like &mdash; a bond pricing method from BondLens.</p>
+
+        <div class="rounded-2xl bg-gray-900/50 border border-gray-800/50 overflow-hidden reveal">
+            <div class="flex items-center gap-2 px-4 py-3 bg-gray-900/80 border-b border-gray-800/50">
+                <span class="w-3 h-3 rounded-full bg-red-500/60"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-500/60"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-500/60"></span>
+                <span class="ml-3 text-xs text-gray-500 font-mono">BondPricingService.java &mdash; BondLens</span>
+            </div>
+            <pre class="p-6 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto"><code><span class="text-gray-500">/**
+ * Calculates the clean price of a bond given a yield to maturity.
+ * Uses standard discounted cash flow with day-count convention adjustment.
+ */</span>
+<span class="text-purple-400">public</span> <span class="text-cyan-400">double</span> <span class="text-emerald-400">calculateCleanPrice</span>(<span class="text-cyan-400">Bond</span> <span class="text-orange-300">bond</span>, <span class="text-cyan-400">double</span> <span class="text-orange-300">ytm</span>) {
+    <span class="text-cyan-400">double</span> <span class="text-gray-300">couponPerPeriod</span> = bond.faceValue() * bond.couponRate() / bond.couponFrequency();
+    <span class="text-cyan-400">double</span> <span class="text-gray-300">ratePerPeriod</span>   = ytm / bond.couponFrequency();
+
+    <span class="text-cyan-400">double</span> <span class="text-gray-300">pvCoupons</span> = <span class="text-cyan-400">0.0</span>;
+    <span class="text-purple-400">for</span> (<span class="text-cyan-400">int</span> <span class="text-gray-300">i</span> = <span class="text-cyan-400">1</span>; i &lt;= bond.periodsRemaining(); i++) {
+        pvCoupons += couponPerPeriod / Math.pow(<span class="text-cyan-400">1</span> + ratePerPeriod, i);
+    }
+
+    <span class="text-cyan-400">double</span> <span class="text-gray-300">pvFace</span> = bond.faceValue() / Math.pow(<span class="text-cyan-400">1</span> + ratePerPeriod, bond.periodsRemaining());
+    <span class="text-cyan-400">double</span> <span class="text-gray-300">dirtyPrice</span> = pvCoupons + pvFace;
+
+    <span class="text-gray-500">// Subtract accrued interest for clean price</span>
+    <span class="text-cyan-400">double</span> <span class="text-gray-300">accrualFraction</span> = (<span class="text-cyan-400">double</span>) bond.daysSinceLastCoupon() / bond.daysInCouponPeriod();
+    <span class="text-cyan-400">double</span> <span class="text-gray-300">accruedInterest</span> = couponPerPeriod * accrualFraction;
+
+    <span class="text-purple-400">return</span> dirtyPrice - accruedInterest;
+}</code></pre>
+        </div>
+        <p class="text-gray-600 text-xs font-mono mt-4 text-center reveal">Clean, stateless, no side effects. Pure domain logic. The way enterprise code should be.</p>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CONTRIBUTION HEATMAP
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="relative border-t border-gray-800/50">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+        <p class="font-mono text-emerald-400/60 text-xs tracking-widest mb-4 reveal">CONSISTENCY</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4 reveal">Coding Activity</h2>
+        <p class="text-gray-500 mb-10 max-w-lg text-sm reveal">I ship code regularly &mdash; professional work, side projects, and continuous learning.</p>
+
+        <div class="rounded-2xl bg-gray-900/30 border border-gray-800/50 p-6 sm:p-8 overflow-x-auto reveal">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs text-gray-500 font-mono">Last 20 weeks</span>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-600">Less</span>
+                    <span class="w-3 h-3 rounded-sm bg-gray-800"></span>
+                    <span class="w-3 h-3 rounded-sm bg-emerald-900"></span>
+                    <span class="w-3 h-3 rounded-sm bg-emerald-700"></span>
+                    <span class="w-3 h-3 rounded-sm bg-emerald-500"></span>
+                    <span class="w-3 h-3 rounded-sm bg-emerald-400"></span>
+                    <span class="text-xs text-gray-600">More</span>
+                </div>
+            </div>
+            <div id="heatmap" class="flex gap-1"></div>
+            <div class="flex justify-between mt-3">
+                <span class="text-xs text-gray-600 font-mono">20 weeks ago</span>
+                <span class="text-xs text-gray-600 font-mono">This week</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     WHAT I'M BUILDING NEXT
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="relative border-t border-gray-800/50">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+        <p class="font-mono text-emerald-400/60 text-xs tracking-widest mb-4 reveal">GROWTH MINDSET</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4 reveal">What I'm Building Next</h2>
+        <p class="text-gray-500 mb-10 max-w-lg text-sm reveal">I never stop learning. Here's what's on my radar.</p>
+
+        <div class="grid sm:grid-cols-3 gap-6">
+            <div class="p-6 rounded-2xl bg-gray-900/30 border border-gray-800/50 reveal">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+                    <span class="text-xs font-mono text-yellow-400">IN PROGRESS</span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Cloud-Native Deployment</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Containerizing BondLens with Docker, deploying on AWS/Railway. Learning Kubernetes fundamentals for orchestration at scale.</p>
+                <div class="flex flex-wrap gap-1.5 mt-4">
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">Docker</span>
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">AWS</span>
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">CI/CD</span>
+                </div>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-gray-900/30 border border-gray-800/50 reveal">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                    <span class="text-xs font-mono text-cyan-400">EXPLORING</span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Reactive Systems</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Diving into Spring WebFlux and reactive programming patterns. Non-blocking I/O for high-throughput market data processing.</p>
+                <div class="flex flex-wrap gap-1.5 mt-4">
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">WebFlux</span>
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">R2DBC</span>
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">Reactor</span>
+                </div>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-gray-900/30 border border-gray-800/50 reveal">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                    <span class="text-xs font-mono text-purple-400">PLANNED</span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">System Design Mastery</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Studying distributed systems design &mdash; consistency models, event sourcing, CQRS. Preparing for senior/staff-level architecture conversations.</p>
+                <div class="flex flex-wrap gap-1.5 mt-4">
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">CQRS</span>
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">Event Sourcing</span>
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">Kafka</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BUILT WITH — META PROOF OF SKILLS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="relative border-t border-gray-800/50">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+        <div class="text-center reveal">
+            <p class="font-mono text-emerald-400/60 text-xs tracking-widest mb-4">META</p>
+            <h2 class="text-2xl font-bold text-white mb-3">This Portfolio Is The Proof</h2>
+            <p class="text-gray-500 max-w-lg mx-auto mb-10 text-sm">
+                Not a template. Not a static page. A Spring Boot application &mdash; built with the same tools I use professionally.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-900/50 border border-gray-800/50">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-sm text-gray-300 font-mono">Java 21</span>
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-900/50 border border-gray-800/50">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-sm text-gray-300 font-mono">Spring Boot 3.2</span>
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-900/50 border border-gray-800/50">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-sm text-gray-300 font-mono">Thymeleaf</span>
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-900/50 border border-gray-800/50">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-sm text-gray-300 font-mono">HTMX</span>
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-900/50 border border-gray-800/50">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-sm text-gray-300 font-mono">Tailwind CSS</span>
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-900/50 border border-gray-800/50">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-sm text-gray-300 font-mono">Vanilla JS</span>
+                </div>
+            </div>
+            <p class="text-gray-600 text-xs font-mono mt-6">
+                Zero frameworks on the frontend. No React, no Vue, no Angular. Just clean server-rendered HTML.
+            </p>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BACK TO TOP BUTTON
+     ═══════════════════════════════════════════════════════════════ -->
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+        class="fixed bottom-6 left-6 z-30 p-3 rounded-full bg-gray-900/90 border border-gray-700/60 hover:border-emerald-500/40 backdrop-blur-md shadow-lg shadow-black/30 text-gray-500 hover:text-emerald-400 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none cursor-pointer">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+    </svg>
+</button>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FLOATING COMMAND PILL (always visible)
+     ═══════════════════════════════════════════════════════════════ -->
+<button id="floating-cmd" onclick="document.getElementById('command-palette').classList.add('active'); document.getElementById('command-input').focus();"
+        class="fixed bottom-6 right-6 z-30 flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-gray-900/90 border border-gray-700/60 hover:border-emerald-500/40 backdrop-blur-md shadow-lg shadow-black/30 hover:shadow-emerald-500/5 transition-all duration-300 group cursor-pointer cmd-float-in">
+    <svg class="w-4 h-4 text-gray-400 group-hover:text-emerald-400 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+    </svg>
+    <span class="text-xs text-gray-400 font-mono group-hover:text-gray-300 transition hidden sm:inline">Command Center</span>
+    <kbd class="text-[10px] text-gray-500 font-mono border border-gray-700 px-1.5 py-0.5 rounded group-hover:border-emerald-500/30 group-hover:text-emerald-400 transition">/</kbd>
+</button>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════════ -->
+<footer class="border-t border-gray-800/50">
+    <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-gray-600 font-mono">
+            &copy; 2026 JAWAD ALI <span class="mx-2 text-gray-800">|</span> ALL SYSTEMS OPERATIONAL
+        </p>
+        <div class="flex items-center gap-6">
+            <p class="text-xs text-gray-700 font-mono flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+                <span id="total-visits" class="text-emerald-500">--</span> total visits
+            </p>
+            <p class="text-xs text-gray-700 font-mono flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                Page loaded in <span id="load-time" class="text-emerald-500">--</span>ms
+            </p>
+        </div>
+    </div>
+</footer>
+
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
