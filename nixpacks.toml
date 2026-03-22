@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["jdk21", "maven"]
+
+[phases.build]
+cmds = ["mvn clean package -DskipTests -B"]
+
+[start]
+cmd = "java -Dspring.profiles.active=prod -jar target/portfolio-1.0.0.jar"
