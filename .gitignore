@@ -22,3 +22,13 @@ Thumbs.db
 
 ### Runtime ###
 visit-count.txt
+
+### Secrets & Keys ###
+*.key
+*.pem
+*.p12
+*.jks
+.env
+.env.*
+credentials.json
+secrets.yml

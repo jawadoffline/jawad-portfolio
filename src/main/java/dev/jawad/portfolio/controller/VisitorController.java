@@ -24,9 +24,19 @@ public class VisitorController {
         scheduler.scheduleAtFixedRate(this::broadcastCount, 0, 3, TimeUnit.SECONDS);
     }
 
+    private static final long SSE_TIMEOUT = 5 * 60 * 1000L; // 5 minutes
+    private static final int MAX_CONNECTIONS = 50;
+
     @GetMapping(value = "/api/visitors/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter streamVisitors() {
-        SseEmitter emitter = new SseEmitter(0L); // no timeout
+        // Reject if too many connections
+        if (emitters.size() >= MAX_CONNECTIONS) {
+            SseEmitter rejected = new SseEmitter(0L);
+            rejected.complete();
+            return rejected;
+        }
+
+        SseEmitter emitter = new SseEmitter(SSE_TIMEOUT);
         AtomicBoolean removed = new AtomicBoolean(false);
 
         emitters.add(emitter);
