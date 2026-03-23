@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bond Price Calculator — Jawad Ali</title>
+    <meta name="description" content="Calculate bond clean price, dirty price, duration, DV01, convexity, and cash flow schedule. Built with Java 21 and Spring Boot.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Bond Price Calculator — Jawad Ali">
+    <meta property="og:description" content="Fixed income bond pricing tool. Clean price, dirty price, duration, DV01, convexity, cash flows.">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23030712'/><path d='M25 70 L40 45 L55 55 L75 25' stroke='%2310b981' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/><circle cx='75' cy='25' r='5' fill='%2310b981'/></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'Consolas', 'monospace'] } } }
+        }
+    </script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans antialiased">
+
+<!-- Navbar -->
+<nav class="sticky top-0 z-40 bg-gray-950/80 backdrop-blur-md border-b border-gray-800/50">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/" class="font-mono font-bold text-emerald-400 text-lg tracking-wider hover:text-emerald-300 transition">
+            JAWAD<span class="text-gray-600">.</span>ALI
+        </a>
+        <div class="flex items-center gap-6">
+            <a href="/" class="text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">HOME</a>
+            <a href="/blog" class="text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">BLOG</a>
+            <a href="/resume" class="text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">RESUME</a>
+            <div class="flex items-center gap-1.5 ml-4 pl-4 border-l border-gray-800">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-xs font-mono text-emerald-400">LIVE TOOL</span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-5xl mx-auto px-6 py-16">
+
+    <!-- Header -->
+    <div class="mb-12">
+        <a href="/" class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-emerald-400 transition font-mono mb-6">&larr; PORTFOLIO</a>
+        <p class="font-mono text-emerald-400/60 text-xs tracking-widest mb-4">FIXED INCOME TOOL</p>
+        <h1 class="text-3xl sm:text-4xl font-black text-white mb-3">Bond Price Calculator</h1>
+        <p class="text-gray-500 max-w-xl text-sm">
+            Calculate clean price, dirty price, Macaulay &amp; modified duration, DV01, convexity, and full cash flow schedule.
+            Every calculation runs on the server via Java 21 + Spring Boot.
+        </p>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-8">
+
+        <!-- Input Form (2 cols) -->
+        <div class="lg:col-span-2">
+            <form hx-post="/tools/bond-calculator/calculate" hx-target="#results" hx-swap="innerHTML"
+                  class="p-6 rounded-2xl bg-gray-900/30 border border-gray-800/50 space-y-5">
+
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <p class="font-mono text-xs text-emerald-400 tracking-wider">BOND PARAMETERS</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 font-mono mb-1.5">FACE VALUE ($)</label>
+                    <input type="number" name="faceValue" value="1000" step="any" required
+                           class="w-full px-4 py-2.5 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-100 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition font-mono">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 font-mono mb-1.5">COUPON RATE (%)</label>
+                    <input type="number" name="couponRate" value="5.0" step="any" required
+                           class="w-full px-4 py-2.5 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-100 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition font-mono">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 font-mono mb-1.5">COUPON FREQUENCY</label>
+                    <select name="couponFrequency"
+                            class="w-full px-4 py-2.5 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-100 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition font-mono">
+                        <option value="1">Annual (1/yr)</option>
+                        <option value="2" selected>Semi-Annual (2/yr)</option>
+                        <option value="4">Quarterly (4/yr)</option>
+                        <option value="12">Monthly (12/yr)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 font-mono mb-1.5">YEARS TO MATURITY</label>
+                    <input type="number" name="yearsToMaturity" value="10" step="any" required
+                           class="w-full px-4 py-2.5 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-100 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition font-mono">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 font-mono mb-1.5">MARKET YIELD / YTM (%)</label>
+                    <input type="number" name="marketYield" value="4.5" step="any" required
+                           class="w-full px-4 py-2.5 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-100 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition font-mono">
+                </div>
+
+                <details class="group">
+                    <summary class="text-xs text-gray-500 font-mono cursor-pointer hover:text-emerald-400 transition">ACCRUED INTEREST SETTINGS &darr;</summary>
+                    <div class="mt-3 space-y-4">
+                        <div>
+                            <label class="block text-xs text-gray-400 font-mono mb-1.5">DAYS SINCE LAST COUPON</label>
+                            <input type="number" name="daysSinceLastCoupon" value="0" min="0"
+                                   class="w-full px-4 py-2.5 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-100 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 font-mono mb-1.5">DAYS IN COUPON PERIOD</label>
+                            <input type="number" name="daysInCouponPeriod" value="180" min="1"
+                                   class="w-full px-4 py-2.5 rounded-lg bg-gray-800/50 border border-gray-700/50 text-gray-100 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition font-mono">
+                        </div>
+                    </div>
+                </details>
+
+                <button type="submit"
+                        class="w-full px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-gray-950 font-bold rounded-lg transition text-sm tracking-wide">
+                    CALCULATE
+                </button>
+            </form>
+
+            <!-- Source code link -->
+            <div class="mt-6 p-4 rounded-xl bg-gray-900/20 border border-gray-800/30">
+                <p class="text-xs text-gray-500 font-mono mb-2">SOURCE CODE</p>
+                <a href="https://github.com/jawadoffline/bond-calculator" target="_blank" rel="noopener noreferrer"
+                   class="text-xs text-emerald-400 hover:underline font-mono">github.com/jawadoffline/bond-calculator</a>
+                <p class="text-xs text-gray-600 mt-2">Pure Java pricing engine — stateless, no dependencies.</p>
+            </div>
+        </div>
+
+        <!-- Results (3 cols) -->
+        <div class="lg:col-span-3">
+            <div id="results">
+                <div class="flex items-center justify-center h-64 rounded-2xl bg-gray-900/20 border border-gray-800/30 border-dashed">
+                    <p class="text-gray-600 font-mono text-sm">Enter bond parameters and click CALCULATE</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="border-t border-gray-800/50 mt-16">
+    <div class="max-w-5xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-gray-600 font-mono">&copy; 2026 JAWAD ALI</p>
+        <a href="https://github.com/jawadoffline/bond-calculator" target="_blank" class="text-xs text-gray-700 hover:text-emerald-400 transition font-mono">View source on GitHub</a>
+    </div>
+</footer>
+
+</body>
+</html>

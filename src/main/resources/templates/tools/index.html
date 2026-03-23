@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools — Jawad Ali</title>
+    <meta name="description" content="Free engineering tools built with Java and Spring Boot. Bond pricing, fixed income analytics, and more.">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23030712'/><text y='.88em' font-size='80' font-family='monospace' font-weight='bold' fill='%2310b981' x='50%25' text-anchor='middle'>J</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'Consolas', 'monospace'] } } }
+        }
+    </script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans antialiased">
+
+<!-- Navbar -->
+<nav class="sticky top-0 z-40 bg-gray-950/80 backdrop-blur-md border-b border-gray-800/50">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/" class="font-mono font-bold text-emerald-400 text-lg tracking-wider hover:text-emerald-300 transition">
+            JAWAD<span class="text-gray-600">.</span>ALI
+        </a>
+        <div class="flex items-center gap-6">
+            <a href="/" class="text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">HOME</a>
+            <a href="/blog" class="text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">BLOG</a>
+            <a href="/tools" class="text-sm text-emerald-400 font-mono tracking-wide">TOOLS</a>
+            <a href="/resume" class="text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">RESUME</a>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-5xl mx-auto px-6 py-16">
+
+    <div class="mb-12">
+        <p class="font-mono text-emerald-400/60 text-xs tracking-widest mb-4">ENGINEERING TOOLS</p>
+        <h1 class="text-3xl sm:text-4xl font-black text-white mb-3">Tools</h1>
+        <p class="text-gray-500 max-w-xl text-sm">
+            Free tools built with Java 21 and Spring Boot. Every calculation runs on the server &mdash; no client-side gimmicks.
+        </p>
+    </div>
+
+    <!-- ═══ FIXED INCOME / TRADING ═══ -->
+    <div class="mb-16">
+        <div class="flex items-center gap-3 mb-6">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <h2 class="font-mono text-sm text-emerald-400 tracking-wider">FIXED INCOME &amp; TRADING</h2>
+            <div class="flex-1 h-px bg-gray-800/50"></div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Bond Price Calculator -->
+            <a href="/tools/bond-calculator" class="group p-6 rounded-2xl bg-gray-900/30 border border-gray-800/50 hover:border-emerald-500/20 transition-all duration-300">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-5 group-hover:bg-emerald-500/20 transition">
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 17l5-7 4 3 6-9"/>
+                        <circle cx="18" cy="4" r="2" fill="currentColor" stroke="none"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 20h18"/>
+                    </svg>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <h3 class="text-lg font-bold text-white group-hover:text-emerald-400 transition">Bond Price Calculator</h3>
+                    <span class="inline-flex items-center gap-1 text-[10px] font-mono bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                        <span class="w-1 h-1 rounded-full bg-emerald-400"></span> LIVE
+                    </span>
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                    Clean price, dirty price, duration, DV01, convexity, and full cash flow schedule.
+                </p>
+                <div class="flex flex-wrap gap-1.5">
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">Pricing</span>
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">Risk</span>
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">Cash Flows</span>
+                </div>
+            </a>
+
+            <!-- Placeholder: Yield Curve -->
+            <div class="p-6 rounded-2xl bg-gray-900/10 border border-gray-800/30 border-dashed opacity-60">
+                <div class="w-12 h-12 rounded-xl bg-gray-800/30 flex items-center justify-center mb-5">
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 17c3-6 7-10 18-10"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 20h18"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-600 mb-2">Yield Curve Builder</h3>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                    Visualize Treasury yield curves and calculate term spreads.
+                </p>
+                <p class="text-xs font-mono text-gray-700 mt-3">COMING SOON</p>
+            </div>
+
+            <!-- Placeholder: Portfolio Risk -->
+            <div class="p-6 rounded-2xl bg-gray-900/10 border border-gray-800/30 border-dashed opacity-60">
+                <div class="w-12 h-12 rounded-xl bg-gray-800/30 flex items-center justify-center mb-5">
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-600 mb-2">Portfolio Risk Analyzer</h3>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                    Aggregate DV01, duration, and P&amp;L across multiple bond positions.
+                </p>
+                <p class="text-xs font-mono text-gray-700 mt-3">COMING SOON</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ PERFORMANCE & ENGINEERING ═══ -->
+    <div class="mb-16">
+        <div class="flex items-center gap-3 mb-6">
+            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+            <h2 class="font-mono text-sm text-cyan-400 tracking-wider">PERFORMANCE &amp; ENGINEERING</h2>
+            <div class="flex-1 h-px bg-gray-800/50"></div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Placeholder: Algorithm Benchmark -->
+            <div class="p-6 rounded-2xl bg-gray-900/10 border border-gray-800/30 border-dashed opacity-60">
+                <div class="w-12 h-12 rounded-xl bg-gray-800/30 flex items-center justify-center mb-5">
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-600 mb-2">Algorithm Benchmark</h3>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                    Compare sorting and search algorithm performance with real-time visualization.
+                </p>
+                <p class="text-xs font-mono text-gray-700 mt-3">COMING SOON</p>
+            </div>
+
+            <!-- Placeholder: JVM Memory Analyzer -->
+            <div class="p-6 rounded-2xl bg-gray-900/10 border border-gray-800/30 border-dashed opacity-60">
+                <div class="w-12 h-12 rounded-xl bg-gray-800/30 flex items-center justify-center mb-5">
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-600 mb-2">JVM Memory Analyzer</h3>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                    Visualize heap usage, GC pauses, and object allocation patterns.
+                </p>
+                <p class="text-xs font-mono text-gray-700 mt-3">COMING SOON</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ DEVELOPER UTILITIES ═══ -->
+    <div>
+        <div class="flex items-center gap-3 mb-6">
+            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+            <h2 class="font-mono text-sm text-purple-400 tracking-wider">DEVELOPER UTILITIES</h2>
+            <div class="flex-1 h-px bg-gray-800/50"></div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Placeholder: JSON Formatter -->
+            <div class="p-6 rounded-2xl bg-gray-900/10 border border-gray-800/30 border-dashed opacity-60">
+                <div class="w-12 h-12 rounded-xl bg-gray-800/30 flex items-center justify-center mb-5">
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-600 mb-2">JSON Formatter</h3>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                    Validate, format, and minify JSON with syntax highlighting.
+                </p>
+                <p class="text-xs font-mono text-gray-700 mt-3">COMING SOON</p>
+            </div>
+
+            <!-- Placeholder: Regex Tester -->
+            <div class="p-6 rounded-2xl bg-gray-900/10 border border-gray-800/30 border-dashed opacity-60">
+                <div class="w-12 h-12 rounded-xl bg-gray-800/30 flex items-center justify-center mb-5">
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-600 mb-2">Regex Tester</h3>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                    Test regular expressions with live matching and group highlighting.
+                </p>
+                <p class="text-xs font-mono text-gray-700 mt-3">COMING SOON</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="border-t border-gray-800/50 mt-16">
+    <div class="max-w-5xl mx-auto px-6 py-8 text-center">
+        <p class="text-sm text-gray-600 font-mono">&copy; 2026 JAWAD ALI</p>
+    </div>
+</footer>
+
+</body>
+</html>
