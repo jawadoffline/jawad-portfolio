@@ -1,6 +1,13 @@
 spring:
   thymeleaf:
     cache: true
+  web:
+    resources:
+      cache:
+        period: 86400
+        cachecontrol:
+          max-age: 86400
+          cache-public: true
 
 server:
   port: ${PORT:8080}

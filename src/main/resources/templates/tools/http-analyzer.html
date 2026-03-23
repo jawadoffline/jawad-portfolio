@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP Response Analyzer — Jawad Ali</title>
+    <meta name="description" content="Analyze any URL's response time, compression, caching, and security headers. Get a performance grade with actionable recommendations.">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23030712'/><path d='M20 75V30l15 20 15-35 15 25 15-10' stroke='%2306b6d4' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'Consolas', 'monospace'] } } }
+        }
+    </script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans antialiased">
+
+<nav class="sticky top-0 z-40 bg-gray-950/80 backdrop-blur-md border-b border-gray-800/50">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/" class="font-mono font-bold text-emerald-400 text-lg tracking-wider hover:text-emerald-300 transition">
+            JAWAD<span class="text-gray-600">.</span>ALI
+        </a>
+        <div class="flex items-center gap-6">
+            <a href="/" class="text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">HOME</a>
+            <a href="/tools" class="text-sm text-gray-400 hover:text-emerald-400 transition font-mono tracking-wide">TOOLS</a>
+            <div class="flex items-center gap-1.5 ml-4 pl-4 border-l border-gray-800">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span class="text-xs font-mono text-cyan-400">LIVE TOOL</span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-5xl mx-auto px-6 py-16">
+
+    <div class="mb-12">
+        <a href="/tools" class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-emerald-400 transition font-mono mb-6">&larr; ALL TOOLS</a>
+        <p class="font-mono text-cyan-400/60 text-xs tracking-widest mb-4">PERFORMANCE ENGINEERING</p>
+        <h1 class="text-3xl sm:text-4xl font-black text-white mb-3">HTTP Response Analyzer</h1>
+        <p class="text-gray-500 max-w-xl text-sm">
+            Enter any URL and get a full performance breakdown &mdash; response timing, compression, caching headers, security headers, and an overall grade. Powered by Java's HttpClient on the server.
+        </p>
+    </div>
+
+    <!-- Input -->
+    <form hx-post="/tools/http-analyzer/analyze" hx-target="#results" hx-swap="innerHTML" hx-indicator="#spinner"
+          class="flex flex-col sm:flex-row gap-3 mb-10">
+        <div class="flex-1 relative">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 font-mono text-sm">https://</span>
+            <input type="text" name="url" placeholder="example.com" required
+                   class="w-full pl-20 pr-4 py-3.5 rounded-xl bg-gray-900/50 border border-gray-800/50 text-gray-100 text-sm font-mono focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/20 transition placeholder-gray-600">
+        </div>
+        <button type="submit"
+                class="px-8 py-3.5 bg-cyan-500 hover:bg-cyan-400 text-gray-950 font-bold rounded-xl transition text-sm tracking-wide flex items-center justify-center gap-2 whitespace-nowrap">
+            <span id="spinner" class="htmx-indicator w-4 h-4 border-2 border-gray-950/30 border-t-gray-950 rounded-full animate-spin"></span>
+            ANALYZE
+        </button>
+    </form>
+
+    <!-- Results -->
+    <div id="results">
+        <div class="flex items-center justify-center h-48 rounded-2xl bg-gray-900/20 border border-gray-800/30 border-dashed">
+            <p class="text-gray-600 font-mono text-sm">Enter a URL and click ANALYZE</p>
+        </div>
+    </div>
+</main>
+
+<footer class="border-t border-gray-800/50 mt-16">
+    <div class="max-w-5xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-gray-600 font-mono">&copy; 2026 JAWAD ALI</p>
+        <p class="text-xs text-gray-700">Java 21 HttpClient &mdash; real server-side analysis</p>
+    </div>
+</footer>
+
+<style>
+    .htmx-indicator { display: none; }
+    .htmx-request .htmx-indicator { display: inline-block; }
+    .htmx-request button[type="submit"] { opacity: 0.7; pointer-events: none; }
+</style>
+
+</body>
+</html>

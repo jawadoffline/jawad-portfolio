@@ -121,19 +121,28 @@
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Placeholder: Algorithm Benchmark -->
-            <div class="p-6 rounded-2xl bg-gray-900/10 border border-gray-800/30 border-dashed opacity-60">
-                <div class="w-12 h-12 rounded-xl bg-gray-800/30 flex items-center justify-center mb-5">
-                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- HTTP Response Analyzer -->
+            <a href="/tools/http-analyzer" class="group p-6 rounded-2xl bg-gray-900/30 border border-gray-800/50 hover:border-cyan-500/20 transition-all duration-300">
+                <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-5 group-hover:bg-cyan-500/20 transition">
+                    <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
                 </div>
-                <h3 class="text-lg font-bold text-gray-600 mb-2">Algorithm Benchmark</h3>
-                <p class="text-gray-700 text-sm leading-relaxed">
-                    Compare sorting and search algorithm performance with real-time visualization.
+                <div class="flex items-center gap-2 mb-2">
+                    <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition">HTTP Response Analyzer</h3>
+                    <span class="inline-flex items-center gap-1 text-[10px] font-mono bg-cyan-500/10 text-cyan-400 px-2 py-0.5 rounded-full border border-cyan-500/20">
+                        <span class="w-1 h-1 rounded-full bg-cyan-400"></span> LIVE
+                    </span>
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                    Analyze any URL's response time, compression, caching, security headers, and get a performance grade.
                 </p>
-                <p class="text-xs font-mono text-gray-700 mt-3">COMING SOON</p>
-            </div>
+                <div class="flex flex-wrap gap-1.5">
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">Timing</span>
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">Headers</span>
+                    <span class="px-2 py-0.5 text-xs font-mono rounded bg-gray-800 text-gray-500">Performance</span>
+                </div>
+            </a>
 
             <!-- Placeholder: JVM Memory Analyzer -->
             <div class="p-6 rounded-2xl bg-gray-900/10 border border-gray-800/30 border-dashed opacity-60">
