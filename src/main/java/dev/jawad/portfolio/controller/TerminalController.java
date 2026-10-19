@@ -35,7 +35,6 @@ public class TerminalController {
                       uptime          System uptime
                       date            Current date/time
                       neofetch        System info
-                      matrix          Toggle matrix rain
                       clear           Clear terminal
                       help            Show this help
                     ──────────────────────────────────────""";
@@ -174,14 +173,12 @@ public class TerminalController {
                          | | | |        OS:      Spring Boot 3.2.5
                          | | | |        Kernel:  Java 21 (LTS)
                          | |_| |        Shell:   Thymeleaf + HTMX
-                          \\___/         UI:      Tailwind CSS
+                          \\___/         UI:      Custom CSS
                                         WM:      Vanilla JavaScript
                     ──────────────       Uptime:  Always Online
-                    Portfolio v3.0      Terminal: This thing right here
-                                        Packages: 3 (Maven)
-                                        CPU:     100% passion""";
-
-            case "matrix" -> "__MATRIX__";
+                    Portfolio v4.0      Terminal: This thing right here
+                                        Build:    Maven
+                                        Home:    Bergamo, Italy""";
 
             case "clear" -> "__CLEAR__";
 

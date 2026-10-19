@@ -1,4 +1,1 @@
-<div class="p-6 rounded-2xl bg-red-500/5 border border-red-500/20 text-center">
-    <p class="text-red-400 font-mono text-sm mb-2">ANALYSIS FAILED</p>
-    <p class="text-gray-400 text-sm" th:text="${error}"></p>
-</div>
+<div class="error-state" role="alert" xmlns:th="http://www.thymeleaf.org"><h2>Couldn’t analyze that address.</h2><p th:text="${error}"></p><p>Check the URL and try again.</p></div>
