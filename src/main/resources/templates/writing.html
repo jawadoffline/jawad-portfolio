@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head th:replace="~{fragments/layout :: head('Writing — Jawad Ali', 'Notes from engineering and personal reflections on attention, progress, and everyday life.')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: header('writing')}"></div>
+<main id="main" class="container page-main">
+    <header class="page-heading">
+        <p class="eyebrow">The notebook</p>
+        <h1>Notes from work.<br><em>Thoughts on life.</em></h1>
+        <p>Some things I learn by building. Others, by paying attention. This is where I write them down.</p>
+    </header>
+    <div class="writing-collections">
+        <a class="writing-collection" href="/blog">
+            <div class="collection-top"><span class="eyebrow">01 / Engineering</span><span class="collection-count" th:text="${engineeringCount + (engineeringCount == 1 ? ' article' : ' articles')}"></span></div>
+            <h2>From<br>the workbench.</h2>
+            <p>Java, infrastructure, performance, and the things I learn while making software work.</p>
+            <span class="text-link">Explore engineering <span aria-hidden="true">↗</span></span>
+        </a>
+        <a class="writing-collection" href="/reflections">
+            <div class="collection-top"><span class="eyebrow">02 / Reflections</span><span class="collection-count" th:text="${reflectionCount + (reflectionCount == 1 ? ' essay' : ' essays')}"></span></div>
+            <h2>A little room<br>to <em>think.</em></h2>
+            <p>Personal essays on attention, quiet progress, and finding your own way through ordinary days.</p>
+            <span class="text-link">Read the reflections <span aria-hidden="true">↗</span></span>
+        </a>
+    </div>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

@@ -1,15 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
-<head th:replace="~{fragments/layout :: head('Writing — Jawad Ali', 'Notes on Java, infrastructure, performance, and the things I learn by building software.')}"></head>
+<head th:replace="~{fragments/layout :: head(${collectionLabel + ' — Jawad Ali'}, ${reflections ? 'Personal essays on attention, progress, patience, and everyday life.' : 'Notes on Java, infrastructure, performance, and the things I learn by building software.'})}"></head>
 <body>
-<div th:replace="~{fragments/layout :: header('blog')}"></div>
+<div th:replace="~{fragments/layout :: header('writing')}"></div>
 <main id="main" class="container page-main">
-    <header class="page-heading"><p class="eyebrow">The notebook</p><h1>Notes from<br><em>the process.</em></h1><p>Things I’ve built, problems I’ve worked through, and the occasional useful discovery. Written down while they’re still fresh.</p></header>
-    <div class="empty-state" th:if="${#lists.isEmpty(posts)}"><h2>A blank page, for now.</h2><p>New writing will appear here.</p></div>
+    <nav class="writing-nav" aria-label="Writing collections">
+        <a href="/writing">All writing</a>
+        <a href="/blog" th:attr="aria-current=${!reflections ? 'page' : null}">Engineering</a>
+        <a href="/reflections" th:attr="aria-current=${reflections ? 'page' : null}">Reflections</a>
+    </nav>
+    <header class="page-heading" th:if="${reflections}">
+        <p class="eyebrow">The personal pages</p>
+        <h1>A little room<br>to <em>think.</em></h1>
+        <p>On attention, quiet progress, and the things we live through. A collection of personal essays, one thought at a time.</p>
+    </header>
+    <header class="page-heading" th:unless="${reflections}">
+        <p class="eyebrow">From the workbench</p>
+        <h1>Notes from<br><em>the process.</em></h1>
+        <p>Things I’ve built, problems I’ve worked through, and the occasional useful discovery. Written down while they’re still fresh.</p>
+    </header>
+    <div class="empty-state" th:if="${#lists.isEmpty(posts)}">
+        <h2>A blank page, for now.</h2>
+        <p>New writing will appear here.</p>
+    </div>
     <div class="post-list" th:unless="${#lists.isEmpty(posts)}">
-        <a class="post-link" th:each="post : ${posts}" th:href="@{'/blog/' + ${post.slug}}">
-            <span class="post-date" th:text="${#temporals.format(post.date, 'dd MMM yyyy')}"></span>
-            <div><h2 th:text="${post.title}"></h2><p th:text="${post.description}"></p><div class="post-tags"><span th:each="tag : ${post.tags}" th:text="${tag}"></span><span th:text="${post.readingTimeMinutes + ' min read'}"></span></div></div>
+        <a class="post-link" th:each="post, item : ${posts}" th:href="@{${collectionPath + '/' + post.slug}}">
+            <span class="post-date">
+                <span class="essay-number" th:if="${reflections}" th:text="${'Essay ' + #numbers.formatInteger(item.count, 2)}"></span>
+                <time th:if="${post.date != null}" th:datetime="${post.date}" th:text="${#temporals.format(post.date, 'dd MMM yyyy')}"></time>
+            </span>
+            <div>
+                <h2 th:text="${post.title}"></h2>
+                <p th:text="${post.description}"></p>
+                <div class="post-tags">
+                    <span th:each="tag : ${post.tags}" th:text="${tag}"></span>
+                    <span th:text="${post.readingTimeMinutes + ' min read'}"></span>
+                </div>
+            </div>
             <span class="post-arrow" aria-hidden="true">↗</span>
         </a>
     </div>

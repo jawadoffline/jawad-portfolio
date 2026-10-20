@@ -20,6 +20,9 @@ public class BlogController {
     @GetMapping("/blog")
     public String blogList(Model model) {
         model.addAttribute("posts", blogService.getAllPosts());
+        model.addAttribute("collectionLabel", "Engineering");
+        model.addAttribute("collectionPath", "/blog");
+        model.addAttribute("reflections", false);
         return "blog";
     }
 
@@ -28,6 +31,9 @@ public class BlogController {
         var post = blogService.getPostBySlug(slug)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
         model.addAttribute("post", post);
+        model.addAttribute("collectionLabel", "Engineering");
+        model.addAttribute("collectionPath", "/blog");
+        model.addAttribute("reflections", false);
         return "blog-post";
     }
 }

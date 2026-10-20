@@ -7,6 +7,10 @@
     <meta name="description" th:content="${pageDescription}">
     <meta property="og:title" th:content="${pageTitle}">
     <meta property="og:description" th:content="${pageDescription}">
+    <meta property="og:type" th:content="${post != null ? 'article' : 'website'}">
+    <link rel="canonical" th:if="${post != null}" th:href="${'https://jawadali.dev' + collectionPath + '/' + post.slug}">
+    <meta property="og:url" th:if="${post != null}" th:content="${'https://jawadali.dev' + collectionPath + '/' + post.slug}">
+    <meta property="article:published_time" th:if="${post != null and post.date != null}" th:content="${post.date}">
     <meta property="og:image" content="https://jawadali.dev/images/jawad.jpeg">
     <meta name="theme-color" content="#f4f1ea">
     <link rel="icon" th:href="@{/images/favicon.svg}">
@@ -14,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,450;0,500;1,400;1,450&display=swap" rel="stylesheet">
     <script>try { if (localStorage.getItem('portfolio-theme') === 'dark') document.documentElement.dataset.theme = 'dark'; } catch (_) {}</script>
-    <link rel="stylesheet" th:href="@{/css/styles.css(v=2)}">
+    <link rel="stylesheet" th:href="@{/css/styles.css(v=3)}">
     <script th:src="@{/js/main.js(v=2)}" defer></script>
     <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
 </head>
@@ -27,7 +31,7 @@
         <nav id="site-nav" class="site-nav" aria-label="Main navigation">
             <a href="/#work">Work</a>
             <a href="/#about">About</a>
-            <a href="/blog" th:attr="aria-current=${activePage == 'blog' ? 'page' : null}">Writing</a>
+            <a href="/writing" th:attr="aria-current=${activePage == 'writing' ? 'page' : null}">Writing</a>
             <a href="/tools" th:attr="aria-current=${activePage == 'tools' ? 'page' : null}">Tools</a>
             <a class="nav-contact" href="/#contact">Let’s talk <span aria-hidden="true">↗</span></a>
         </nav>

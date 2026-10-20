@@ -13,7 +13,8 @@ The homepage leads with a portrait and selected project stories, followed by bac
 ## Features
 
 - Server-rendered portfolio and print-ready résumé at `/resume`.
-- Markdown blog at `/blog`; posts load from `src/main/resources/content/blog/` at startup.
+- Writing hub at `/writing`, with engineering articles at `/blog` and personal essays at `/reflections`.
+- Both Markdown collections load at startup, with individual article pages and shareable links.
 - Bond price calculator with pricing, risk metrics, and cash flow schedules.
 - HTTP response analyzer with measured total response time, estimated phases, and header findings.
 - HTMX forms with loading, error, and recovery states.
@@ -47,9 +48,10 @@ java -jar target/portfolio-1.0.0.jar
 - `src/main/resources/templates/` — portfolio, writing, résumé, and tool views.
 - `src/main/resources/static/css/styles.css` — design tokens, layouts, responsive styles.
 - `src/main/resources/static/js/main.js` — shared interactions and walkthrough content.
-- `src/main/resources/content/blog/` — Markdown posts with frontmatter.
+- `src/main/resources/content/blog/` — engineering articles with frontmatter.
+- `src/main/resources/content/reflections/` — personal essays with frontmatter.
 
-Blog frontmatter supports `title`, `description`, `author`, `date` (ISO format), and comma-separated `tags`.
+Article frontmatter supports `title`, `description`, `author`, optional `date` (ISO format), comma-separated `tags`, and optional `order`. See [the writing guide](docs/writing.md) for adding and publishing articles.
 
 ## Deployment
 

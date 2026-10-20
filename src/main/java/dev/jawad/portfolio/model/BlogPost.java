@@ -10,5 +10,6 @@ public record BlogPost(
         LocalDate date,
         String[] tags,
         int readingTimeMinutes,
-        String htmlContent
+        String htmlContent,
+        int order
 ) {}

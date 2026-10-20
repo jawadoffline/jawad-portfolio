@@ -25,6 +25,7 @@ public class BlogService {
 
     private static final Logger log = LoggerFactory.getLogger(BlogService.class);
     private final List<BlogPost> posts = new ArrayList<>();
+    private final List<BlogPost> reflections = new ArrayList<>();
     private final Parser parser;
     private final HtmlRenderer renderer;
 
@@ -39,25 +40,32 @@ public class BlogService {
 
     @PostConstruct
     public void loadPosts() {
+        loadCollection("classpath:content/blog/*.md", posts);
+        loadCollection("classpath:content/reflections/*.md", reflections);
+    }
+
+    private void loadCollection(String pattern, List<BlogPost> collection) {
         try {
             PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-            Resource[] resources = resolver.getResources("classpath:content/blog/*.md");
+            Resource[] resources = resolver.getResources(pattern);
 
             for (Resource resource : resources) {
                 try {
                     BlogPost post = parseMarkdownFile(resource);
                     if (post != null) {
-                        posts.add(post);
-                        log.info("Loaded blog post: {}", post.slug());
+                        collection.add(post);
+                        log.info("Loaded article: {}", post.slug());
                     }
                 } catch (Exception e) {
                     log.error("Failed to parse blog post: {}", resource.getFilename(), e);
                 }
             }
 
-            // Sort by date descending (newest first)
-            posts.sort(Comparator.comparing(BlogPost::date).reversed());
-            log.info("Loaded {} blog posts", posts.size());
+            collection.sort(Comparator.comparing(BlogPost::date,
+                            Comparator.nullsLast(Comparator.reverseOrder()))
+                    .thenComparingInt(BlogPost::order)
+                    .thenComparing(BlogPost::slug));
+            log.info("Loaded {} articles from {}", collection.size(), pattern);
         } catch (Exception e) {
             log.error("Failed to load blog posts", e);
         }
@@ -70,6 +78,16 @@ public class BlogService {
     public Optional<BlogPost> getPostBySlug(String slug) {
         return posts.stream()
                 .filter(p -> p.slug().equals(slug))
+                .findFirst();
+    }
+
+    public List<BlogPost> getReflections() {
+        return Collections.unmodifiableList(reflections);
+    }
+
+    public Optional<BlogPost> getReflectionBySlug(String slug) {
+        return reflections.stream()
+                .filter(post -> post.slug().equals(slug))
                 .findFirst();
     }
 
@@ -116,7 +134,9 @@ public class BlogService {
             String title = meta.getOrDefault("title", slug);
             String description = meta.getOrDefault("description", "");
             String author = meta.getOrDefault("author", "Jawad Ali");
-            LocalDate date = LocalDate.parse(meta.getOrDefault("date", LocalDate.now().toString()));
+            String dateValue = meta.getOrDefault("date", "");
+            LocalDate date = dateValue.isBlank() ? null : LocalDate.parse(dateValue);
+            int order = Integer.parseInt(meta.getOrDefault("order", String.valueOf(Integer.MAX_VALUE)));
             String[] tags = meta.getOrDefault("tags", "")
                     .replace("[", "").replace("]", "")
                     .split(",");
@@ -129,9 +149,9 @@ public class BlogService {
 
             // Estimate reading time (~200 words per minute)
             int wordCount = markdown.split("\\s+").length;
-            int readingTime = Math.max(1, wordCount / 200);
+            int readingTime = Math.max(1, (int) Math.ceil(wordCount / 200.0));
 
-            return new BlogPost(slug, title, description, author, date, tags, readingTime, htmlContent);
+            return new BlogPost(slug, title, description, author, date, tags, readingTime, htmlContent, order);
         }
     }
 }
