@@ -15,6 +15,7 @@ The homepage leads with a portrait and selected project stories, followed by bac
 - Server-rendered portfolio and print-ready résumé at `/resume`.
 - Writing hub at `/writing`, with engineering articles at `/blog` and personal essays at `/reflections`.
 - Both Markdown collections load at startup, with individual article pages and shareable links.
+- Wheelogz road journal at `/wheelogz`, with its own visual identity, standalone ride stories, and optional companion video links.
 - Bond price calculator with pricing, risk metrics, and cash flow schedules.
 - HTTP response analyzer with measured total response time, estimated phases, and header findings.
 - HTMX forms with loading, error, and recovery states.
@@ -52,6 +53,8 @@ java -jar target/portfolio-1.0.0.jar
 - `src/main/resources/content/reflections/` — personal essays with frontmatter.
 
 Article frontmatter supports `title`, `description`, `author`, optional `date` (ISO format), comma-separated `tags`, and optional `order`. See [the writing guide](docs/writing.md) for adding and publishing articles.
+
+Wheelogz stories load from `src/main/resources/content/wheelogz/`. See [the road journal guide](docs/wheelogz.md) for cover images, ride dates, and scheduled video links.
 
 ## Deployment
 

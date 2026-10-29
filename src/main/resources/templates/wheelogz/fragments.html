@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(pageTitle, pageDescription)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${pageTitle}">Wheelogz — Road Notes</title>
+    <meta name="description" th:content="${pageDescription}">
+    <meta name="theme-color" content="#214b39">
+    <meta property="og:title" th:content="${pageTitle}">
+    <meta property="og:description" th:content="${pageDescription}">
+    <meta property="og:type" th:content="${story != null ? 'article' : 'website'}">
+    <meta property="og:url" th:content="${story != null ? 'https://jawadali.dev/wheelogz/' + story.post.slug : 'https://jawadali.dev/wheelogz'}">
+    <link rel="canonical" th:href="${story != null ? 'https://jawadali.dev/wheelogz/' + story.post.slug : 'https://jawadali.dev/wheelogz'}">
+    <meta property="og:image" th:if="${story != null and !#strings.isEmpty(story.coverImage)}" th:content="${'https://jawadali.dev' + story.coverImage}">
+    <meta property="og:image" th:if="${featured != null and !#strings.isEmpty(featured.coverImage)}" th:content="${'https://jawadali.dev' + featured.coverImage}">
+    <meta property="article:published_time" th:if="${story != null and story.post.date != null}" th:content="${story.post.date}">
+    <link rel="icon" th:href="@{/images/wheelogz/favicon.svg}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;650;700&family=Newsreader:ital,wght@0,400;0,450;0,500;1,400;1,450&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/wheelogz.css(v=1)}">
+    <script th:src="@{/js/wheelogz.js(v=1)}" defer></script>
+</head>
+<body>
+<header class="journal-header" th:fragment="header">
+    <a class="skip-link" href="#main">Skip to the story</a>
+    <div class="wrap header-inner">
+        <a class="journal-brand" href="/wheelogz" aria-label="Wheelogz — journal home">wheelogz<span aria-hidden="true">↗</span></a>
+        <span class="brand-caption">A personal road journal</span>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-controls="journal-nav" aria-expanded="false">Menu <span aria-hidden="true">+</span></button>
+        <nav class="journal-nav" id="journal-nav" aria-label="Wheelogz navigation">
+            <a href="/wheelogz#journal">The journal</a>
+            <a href="/wheelogz#about">About</a>
+            <a class="channel-link" th:href="${channelUrl}" target="_blank" rel="noopener noreferrer">YouTube <span aria-hidden="true">↗</span></a>
+        </nav>
+    </div>
+</header>
+<footer class="journal-footer" th:fragment="footer">
+    <div class="wrap footer-main">
+        <div><a class="journal-brand" href="/wheelogz">wheelogz<span aria-hidden="true">↗</span></a><p>Rides worth remembering.<br>Stories worth keeping.</p></div>
+        <div class="footer-links"><a href="/wheelogz#journal">The journal</a><a th:href="${channelUrl}" target="_blank" rel="noopener noreferrer">Find me on YouTube ↗</a><a href="/">Jawad Ali’s portfolio ↗</a></div>
+    </div>
+    <div class="wrap footer-bottom"><span>© <span th:text="${#temporals.year(#temporals.createNow())}">2026</span> Jawad Ali</span><span>Road notes, by Jawad.</span><a href="#top">Back to the top ↑</a></div>
+</footer>
+</body>
+</html>

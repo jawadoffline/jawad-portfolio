@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head th:replace="~{wheelogz/fragments :: head(${story.post.title + ' — Wheelogz'}, ${story.post.description})}"></head>
+<body>
+<div th:replace="~{wheelogz/fragments :: header}"></div>
+<main id="main">
+    <header class="wrap story-header">
+        <a class="back-link" href="/wheelogz#journal">← Back to the journal</a>
+        <p class="eyebrow" th:text="${'Road notes / Episode ' + #numbers.formatInteger(story.episode, 2)}"></p>
+        <h1 th:text="${story.post.title}"></h1>
+        <p class="story-deck" th:text="${story.post.description}"></p>
+        <div class="story-meta"><span>By <span th:text="${story.post.author}"></span></span><span>Ride: <time th:datetime="${story.rideDate}" th:text="${#temporals.format(story.rideDate, 'd MMMM yyyy')}"></time></span><span th:text="${story.post.readingTimeMinutes + ' min read'}"></span></div>
+    </header>
+    <figure class="wrap story-figure" th:if="${!#strings.isEmpty(story.coverImage)}"><img class="story-cover" th:src="${story.coverImage}" th:alt="${story.coverAlt}" width="1280" height="720" fetchpriority="high"><figcaption><span th:text="${story.motorcycle}"></span><span th:text="${story.location}"></span></figcaption></figure>
+    <article class="story-body" th:utext="${story.post.htmlContent}"></article>
+
+    <section class="wrap watch-section" th:if="${!#strings.isEmpty(story.videoUrl)}" th:attr="data-video-release=${story.videoAvailableAt}" aria-labelledby="watch-title">
+        <div><p class="eyebrow">The filmed ride</p><h2 id="watch-title">See it from<br>the <em>handlebars.</em></h2><p>There’s a video of this ride, too.</p></div>
+        <div class="watch-actions" aria-live="polite">
+            <p data-scheduled-message th:hidden="${videoReady}">Episode <span th:text="${#numbers.formatInteger(story.episode, 2)}"></span> arrives on <time th:datetime="${story.videoAvailableAt}" th:text="${videoReleaseLabel}"></time>.</p>
+            <a class="button" data-watch-link th:hidden="${!videoReady}" th:href="${story.videoUrl}" target="_blank" rel="noopener noreferrer">Watch this ride on YouTube <span aria-hidden="true">↗</span></a>
+            <a class="text-link" th:href="${channelUrl}" target="_blank" rel="noopener noreferrer">Visit the Wheelogz channel <span aria-hidden="true">↗</span></a>
+        </div>
+    </section>
+
+    <section class="wrap next-stories" th:unless="${#lists.isEmpty(otherStories)}" aria-labelledby="more-title"><p class="eyebrow">Another page from the journal</p><h2 id="more-title">Keep exploring.</h2><a th:each="entry : ${otherStories}" th:href="@{'/wheelogz/' + ${entry.post.slug}}"><span th:text="${entry.post.title}"></span><span aria-hidden="true">↗</span></a></section>
+    <div class="wrap story-return"><a class="text-link" href="/wheelogz#journal">Back to the journal <span aria-hidden="true">↗</span></a></div>
+</main>
+<div th:replace="~{wheelogz/fragments :: footer}"></div>
+</body>
+</html>

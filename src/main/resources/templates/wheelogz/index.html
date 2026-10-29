@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head th:replace="~{wheelogz/fragments :: head('Wheelogz — Road Notes by Jawad Ali', 'Motorcycle rides, everyday detours, and stories from the road. A personal journal by Jawad Ali.')} "></head>
+<body>
+<div th:replace="~{wheelogz/fragments :: header}"></div>
+<main id="main">
+    <section class="wrap journal-intro" aria-labelledby="intro-title">
+        <div><p class="eyebrow"><span class="small-rule" aria-hidden="true"></span> Road notes / By Jawad Ali</p><h1 id="intro-title">A few roads.<br>A lot to <em>remember.</em></h1></div>
+        <div class="intro-aside"><p>Motorcycle rides, everyday detours, and the stories I want to keep.</p><a class="text-link" href="#journal">Start reading <span aria-hidden="true">↓</span></a></div>
+    </section>
+
+    <section class="wrap journal-section" id="journal" aria-labelledby="journal-title">
+        <div class="section-line"><h2 id="journal-title" class="eyebrow">The journal</h2><span th:text="${#lists.size(stories) + (#lists.size(stories) == 1 ? ' story so far' : ' stories so far')}"></span></div>
+        <article class="featured-story" th:if="${featured != null}">
+            <a class="story-cover-link" th:href="@{'/wheelogz/' + ${featured.post.slug}}" th:attr="aria-label=${'Read ' + featured.post.title}">
+                <img class="story-cover" th:if="${!#strings.isEmpty(featured.coverImage)}" th:src="${featured.coverImage}" th:alt="${featured.coverAlt}" width="1280" height="720" fetchpriority="high">
+                <div class="type-cover" th:if="${#strings.isEmpty(featured.coverImage)}"><span class="eyebrow" th:text="${'Episode ' + #numbers.formatInteger(featured.episode, 2)}"></span><p>Every ride<br>starts <em>somewhere.</em></p><span th:text="${featured.location}"></span></div>
+            </a>
+            <div class="featured-caption"><span th:text="${featured.motorcycle}"></span><span th:text="${featured.location}"></span></div>
+            <div class="featured-details"><div class="story-index"><span class="eyebrow" th:text="${'Episode ' + #numbers.formatInteger(featured.episode, 2)}"></span><time th:datetime="${featured.rideDate}" th:text="${#temporals.format(featured.rideDate, 'd MMMM yyyy')}"></time></div><div><h3><a th:href="@{'/wheelogz/' + ${featured.post.slug}}" th:text="${featured.post.title}"></a></h3><p th:text="${featured.post.description}"></p><a class="text-link" th:href="@{'/wheelogz/' + ${featured.post.slug}}">Read the story <span class="reading-time" th:text="${featured.post.readingTimeMinutes + ' min read'}"></span><span aria-hidden="true">↗</span></a></div></div>
+        </article>
+        <div class="journal-empty" th:if="${featured == null}"><h3>The first page is waiting.</h3><p>Stories from the road will find their home here.</p></div>
+        <div class="earlier-stories" th:unless="${#lists.isEmpty(earlierStories)}"><a class="earlier-story" th:each="entry : ${earlierStories}" th:href="@{'/wheelogz/' + ${entry.post.slug}}"><img th:if="${!#strings.isEmpty(entry.coverImage)}" th:src="${entry.coverImage}" th:alt="${entry.coverAlt}" loading="lazy" width="400" height="225"><div><p class="eyebrow" th:text="${'Episode ' + #numbers.formatInteger(entry.episode, 2)}"></p><h3 th:text="${entry.post.title}"></h3><p th:text="${entry.post.description}"></p><span class="text-link">Read the story ↗</span></div></a></div>
+    </section>
+
+    <section class="journal-about" id="about" aria-labelledby="about-title"><div class="wrap about-grid"><div><p class="eyebrow">A little about Wheelogz</p><h2 id="about-title">The person behind<br>the <em>handlebars.</em></h2></div><div class="about-copy"><p>I’m Jawad. A software engineer, a motorcycle rider, and someone who has recorded plenty of rides without ever keeping them in order.</p><p>Wheelogz is my way of changing that. It begins with a Lifan KPT 250, after years of riding a Yamaha YBR 125G and a Suzuki GS150, and a wish to keep a proper record of the journeys.</p><p>Some entries will be about the motorcycle. Some will be about a place, an ordinary errand, or something that happened along the way. The videos live on YouTube. These are the written stories.</p><a class="text-link" th:href="${channelUrl}" target="_blank" rel="noopener noreferrer">Come along on YouTube <span aria-hidden="true">↗</span></a></div></div></section>
+    <section class="wrap journal-quote"><p class="eyebrow">Why keep a journal?</p><blockquote>“That way, I’ll have a collection of memories to look back on later in life.”</blockquote><p class="quote-credit">Jawad Ali · From the first ride</p></section>
+</main>
+<div th:replace="~{wheelogz/fragments :: footer}"></div>
+</body>
+</html>
