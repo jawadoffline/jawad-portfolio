@@ -1,6 +1,6 @@
 ---
 title: The Ride I Finally Recorded
-description: A Sunday errand to Rawalpindi, a new motorcycle, and the beginning of a journal I had been meaning to keep.
+description: Come along to Rawalpindi: there are luggage boxes to collect, wrong gears to find, and a new motorcycle to get to know.
 author: Jawad Ali
 date: 2026-10-29
 rideDate: 2026-10-25
@@ -14,85 +14,95 @@ videoAvailableAt: 2026-10-30T21:00:00+05:00
 tags: [First rides, Lifan KPT 250]
 ---
 
-The plan for Sunday was straightforward: collect the luggage boxes for my new motorcycle and get home before another busy week began.
+Lehtrar Road is making us work for this Sunday outing. There is dust, traffic, and work on the service road. I have spent practically my whole life around here, but familiarity does very little for the congestion.
 
-I had attended a friend's wedding earlier in the day. The top box, side boxes, and their mounting frame were waiting at OW Motorsports in Rawalpindi. If I did not collect them that day, the job would probably wait until the following weekend.
+The plan is simple enough: get to Rawalpindi, collect the luggage boxes for the new motorcycle, and come home. I have already been to a friend's wedding today. If I leave this errand for another day, a busy working week will probably turn it into next weekend's job.
 
-I had also been planning to start recording my rides for a long time. This time, on the way to the showroom, I started talking to the camera.
+Under me is a Lifan KPT 250, bought earlier this month. The top box, side boxes, and mounting frame are waiting at OW Motorsports in Chaklala Scheme 3. They have taken about two weeks to arrive. I haven't needed them urgently, but it will be good to have the complete bike at last.
 
-Assalam-o-Alaikum. The first video had begun.
+For now, we just need to get through this stretch.
 
-## A new bike, and an old habit
+## A left at the petrol station
 
-My name is Jawad Ali. I am a software engineer, and I have been riding and touring for the past six or seven years. My hometown is Kohat, but I have spent practically my entire life around Lehtrar Road in Islamabad.
+The road clears enough to give me a little breathing room. We are coming into Chaklala Scheme 3, and I am trying to remember the turn for the showroom.
 
-My first touring motorcycle was a Yamaha YBR 125G. After a couple of tours and a few years with it, I moved to Pakistan's ultimate touring machine: the Suzuki GS150.
+There is the petrol station. Left here. Yes, this is it.
 
-I rode the GS150 for four or five years. I still own it, and I have thoroughly enjoyed my time with it. The latest addition is a Lifan KPT 250, which I bought in October 2026. I had finally decided to try an adventure-style motorcycle.
+Getting into the showroom takes a little negotiation. I ask for room to pass and make my way through the entrance. The ride can pause here while the boxes go on.
 
-The new bike was already giving me things to learn. Its gearbox needed a different movement from the one my feet remembered from the Suzuki. More than once during the ride, I found myself selecting the wrong gear.
+My experience with the showroom has been good; the late luggage is the only hiccup so far. With it fitted, the KPT finally has everything that came with the package. Nothing extra yet. There are already a few additions on my mind, but those can wait.
 
-There I go shifting into the wrong gear again.
+Time to find the way home.
 
-I remembered having to make a similar adjustment when I moved from the YBR to the GS150. That had become familiar with time. This probably would too.
+## My left foot still owns a Suzuki
 
-## The first recording
+I think this is the right road. Chaklala Scheme 3, Old Airport… yes, we will take a U-turn up ahead.
 
-Anyone who knows Lehtrar Road will understand why I waited for a clearer stretch before recording. There was congestion, dust, and work on the service road. The journey was tiring enough without trying to deliver a polished introduction through all of it.
+Actually, that other turn might have saved us the U-turn altogether. Something to remember next time.
 
-By the time I was approaching Chaklala Scheme 3, I was introducing myself, explaining the bike, and working out what else to say. I had watched plenty of motovlogs. Making one myself was a new experience.
+The Old Airport underpass is ahead, and there is Ammar Roundabout. As the route starts to make sense, the motorcycle gives me something else to work on.
 
-Near the showroom, I recognized the petrol station where I needed to turn left. Getting through the entrance required asking for a little room to pass.
+Wrong gear. Again.
 
-Then the camera could wait while the boxes were fitted.
+After four or five years on a GS150, my left foot still expects a Suzuki. This six-speed gearbox needs a different habit, and mine has not caught up yet.
 
-The luggage had arrived about two weeks after the motorcycle. That was the only issue in what had otherwise been a good experience with the showroom, and I had not needed it urgently. With the boxes installed, the package was finally complete.
+Before the GS, I had a Yamaha YBR 125G. We did a couple of tours together before I moved on to Pakistan's ultimate touring machine, the GS150. I still own it. Switching from the Yamaha took some adjustment too, and eventually I stopped thinking about the gears at all.
 
-## Things you notice on the way home
+We will get there with this one. Apparently, we are going to practise quite a lot on the way home.
 
-On the return journey, I was still working out the route. Chaklala Scheme 3, Old Airport, a U-turn I might have avoided if I had chosen the other road. Another thing to remember for next time.
+## Getting acquainted
 
-The bike had covered only about seventy-odd kilometres when I began discussing my impressions. That was enough to notice a few things, while leaving plenty of questions for a proper tour.
+Seventy-three kilometres is hardly enough to know a motorcycle. It is enough to start collecting questions.
 
-The throttle response felt good. Around town, the motorcycle seemed comfortable, and I could put my feet on the ground easily. The seat was fine over a short ride, although I wondered how it would feel after three or four hundred kilometres.
+The seat is fine for a short outing. Three or four hundred kilometres might be a different conversation. I can put my feet down comfortably, and around town the bike feels good. The throttle responds nicely too, although I am taking it easy while the engine is still new.
 
-I was less certain about the luggage. The top-box mounting plate did not inspire the same confidence as the JDR setup I had used on the Suzuki. I wanted to inspect it properly in daylight before drawing conclusions.
+The luggage is less convincing. I am used to the JDR top-box mount on the Suzuki, and this mounting plate doesn't give me quite the same confidence. I need to look at it properly in daylight before deciding what I think of it. For a tour, I am already leaning towards soft luggage rather than taking these side boxes everywhere.
 
-The handlebar also felt a little low for me. I was leaning forward slightly and thinking about how the position might feel with a seat cushion, or when standing on the pegs. Those were things to investigate as I spent more time with the motorcycle.
+Then there is the handlebar. I am leaning forward a little more than I would like. Add a cushion to the seat and I will be sitting higher still. Standing on the pegs is another thing to consider. A little extra bar height might help, but I need more time on the bike to work that out.
 
-Thinking about seat cushions reminded me of my old solution on the GS150: an inner tube from a wheelbarrow tyre. I had never tried a gel or mesh cushion, but the air cushioning from that tube had been difficult to beat.
+The cushion question takes me back to the GS150. My solution there was an inner tube from a wheelbarrow tyre.
 
-Someone really ought to make a proper product out of that idea.
+I have never tried a gel or mesh cushion, so I cannot offer a grand comparison. I can say that the air in that little tube did a remarkably good job. Someone really should turn the idea into a proper product.
 
-## Why keep a record?
+These are the sorts of things I like discovering through riding. A seat, a riding position, a mounting plate: they each become a little more interesting once you have to live with them.
 
-Eventually, between the bike observations and the wrong gear changes, I got to the reason for starting the channel.
+## A little time for this, too
 
-I had recorded rides before. The videos were scattered around, without much organization or sequence. I wanted to document this part of my life properly and build a collection of memories I could return to later.
+Away from the bike, there is work, family, and the usual problem of finding time for everything. I am a software engineer, working remotely now. My little boy turned nine months old two days ago. There is a podcast I am trying to keep moving as well.
 
-There was a lot going on outside motorcycling too. I was working remotely, had a podcast channel with several episodes, and was trying to find time for the things I wanted to make. At home, my little boy had turned nine months old just two days earlier.
+I may have started too many things at once.
 
-I joked that I might have started too many things at once. Motovlogging, at least, offered a format that suited my ability to keep talking. My friends could vouch for that.
+But I want to make room for these rides. I have been riding and touring for six or seven years, and I already have memories scattered across old recordings with no real order to them. I want something I can return to years from now and follow from the beginning.
 
-The channel had a second purpose as well. I wanted to help people who were beginning to explore riding and touring: friends wondering which motorcycle to buy, what equipment they might need, where they could go near Islamabad, and what a trip might cost.
+There are friends who want to start riding too. Which bike should they get? What do they need to take? Where can they go near Islamabad, and what will it cost? I would like to make those first trips a little easier for them. We can work through the questions as we go.
 
-Those are the questions I want to work through as the journeys happen.
+Today's outing is only an errand to Rawalpindi, but it is as good a place to begin as any.
 
-## The first hundred kilometres
+## One hundred and one
 
-Later in the ride, the odometer was showing 101 kilometres. I was a little suspicious of how quickly the numbers were adding up and wanted to check the reading against routes whose distances I knew.
+The odometer now reads 101 kilometres.
 
-Still, this was the beginning of the bike's story with me. The first service, the changes I might make, and the trips ahead could all become part of the record.
+That seems to have happened rather quickly. Perhaps I really am covering more distance than I think. Perhaps the meter needs checking. A few familiar routes, with distances I know, should help settle that.
 
-I briefly imagined documenting the motorcycle all the way to a hundred thousand kilometres. Then I caught myself. There were plenty of possibilities between here and there, including changing motorcycles entirely.
+For a moment, I imagine following this bike all the way to a hundred thousand kilometres. Every service, every change, all those trips.
 
-Ten thousand kilometres seemed like a sensible first target.
+Then I catch myself. I might change bikes long before that. There is plenty to find out about this one first.
 
-By then I was back on Lehtrar Road, watching drivers and trying to anticipate what they might do next. Another U-turn, and I was nearly home.
+Ten thousand. Let's start there.
 
-The boxes were fitted. The first video was recorded. There would be time to learn how to make the next one better.
+And there goes another wrong gear.
 
-Allah Hafiz.
+## Back on Lehtrar Road
+
+Home is close, but Lehtrar Road still needs my attention. I would appreciate it if the driver ahead could finish the conversation and let me pass.
+
+Here, you spend a lot of time trying to work out what everyone else is about to do. Will that car turn left? Right? An indicator would be helpful, but I am not counting on one. I watch, leave room, and try to anticipate the next move.
+
+I have already passed the worst stretch. Another U-turn and I am nearly there.
+
+The boxes are fitted, and the KPT has its first hundred kilometres behind it. I still have a Suzuki habit in my left foot and a growing list of things to check. A proper tour will tell me much more.
+
+For today, that is enough. Time to get home.
 
 ---
 

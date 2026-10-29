@@ -44,4 +44,6 @@ The video itself must also be scheduled or published on YouTube. The journal con
 
 Keep raw captions outside the published content folder. Use them as source material, check the finished story against the ride, and publish the prose.
 
+Write in a conversational first-person voice, letting the ride unfold in the present tense so the reader feels along for it. Follow the route, observations, and passing thoughts. Avoid recapping what was said or explained in the video, introductions to the audience, and requests to subscribe. Keep details grounded in the captions; do not invent dialogue or scenery. The optional video link stays separate from the story.
+
 Restart the application to preview new Markdown content. Run `mvn package`, then commit and push to `master` to publish through the existing deployment workflow.
